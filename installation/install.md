@@ -15,7 +15,7 @@ a virtual environment:
 
 	conda env create
 
-which reads the environment.yml file in your current directory.
+which reads the environment.yml file in your current directory (in this case the one in Physics-8805).
 
 Some packages might not be found in the default conda channels. One
 can either specify relevant package channel(s) in the environment.yml
