@@ -15,7 +15,14 @@ a virtual environment:
 
 	conda env create
 
-which reads the environment.yml file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!
+which reads the environment.yml file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!  You will see a listing being generated like:
+        
+       Downloading and Extracting Packages
+       scikit-learn-0.21.3  | 5.9 MB    | ##################################### | 100% 
+       glib-2.58.3          | 3.1 MB    | ##################################### | 100% 
+       libcxx-8.0.1         | 1000 KB   | ##################################### | 100% 
+       scipy-1.3.1          | 18.1 MB   | ##################################### | 100% 
+etc. (it will not necessarily be in this order).
 
 Some packages might not be found in the default conda channels. One
 can either specify relevant package channel(s) in the environment.yml
@@ -25,7 +32,7 @@ file (as done here), or add them to the default conda channel configuration via,
 
 You shouldn't need to do this for the initial setup.
 
-Once the virtual environment has been created it can be activated:
+Once the virtual environment has been created it can be activated (the name "8805-env" was specified in the environment.yml file):
 
     conda activate 8805-env
 
