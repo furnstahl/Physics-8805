@@ -15,13 +15,15 @@ a virtual environment:
 
 	conda env create
 
-which reads the environment.yml file in your current directory (in this case the one in Physics-8805).
+which reads the environment.yml file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!
 
 Some packages might not be found in the default conda channels. One
 can either specify relevant package channel(s) in the environment.yml
 file (as done here), or add them to the default conda channel configuration via, e.g,
 
 	conda config --append channels conda-forge
+
+You shouldn't need to do this for the initial setup.
 
 Once the virtual environment has been created it can be activated:
 
