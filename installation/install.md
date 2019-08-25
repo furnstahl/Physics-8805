@@ -1,6 +1,3 @@
-<p align="right"><a href="https://furnstahl.github.io/Physics-8805/">Return to home</a></p> 
-
-
 
 ### Installation from GitHub
 
