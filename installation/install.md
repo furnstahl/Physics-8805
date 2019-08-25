@@ -2,14 +2,14 @@
 
 
 
-### Installation
+### Installation from GitHub
 
-Download the repo from github and enter the directory which should have been created on your computer:
+Download the 8805 repository from github and enter the directory which should have been created on your computer:
 
-    git clone https://github.com/NuclearTalent/Bayes2019.git
-    cd Bayes2019
+    git clone https://github.com/furnstahl/Physics-8805.git
+    cd Physics-8805
 
-The notebooks that we will be using depend on several scientific python modules (see the list in environment.yml) and require a python3.x installation. 
+The notebooks that we will be using depend on several scientific python modules (see the list in environment.yml) and require a python3.x installation based on Anaconda. 
 
 These python modules and their dependencies are best installed using ``conda`` by creating
 a virtual environment:
@@ -26,7 +26,7 @@ file (as done here), or add them to the default conda channel configuration via,
 
 Once the virtual environment has been created it can be activated:
 
-    conda activate talent-env
+    conda activate 8805-env
 
 To deactivate the virtual environment:
 
@@ -41,7 +41,9 @@ might have to do
 Note that there are also other options ('venv', 'pipenv') for creating virtual
 environments that includes the python version and packages that we will be using.
 
-Once the environment is set up and activated, you are encouraged to enter the intro directory and start the jupyter notebook:
+Once the environment is set up and activated, you are encouraged to run the test Jupyter notebook:
 
     cd intro
-    jupyter notebook bayesTALENT_intro.ipynb
+    jupyter notebook Anaconda_Bayes_test.ipynb
+
+Other notebooks can be found in the subdirectories under topics.
