@@ -27,7 +27,7 @@ etc. (it will be a pretty long list and not necessarily be in this order).  Then
        Preparing transaction: done
        Verifying transaction: done
        Executing transaction: done 
-where "done" appears when it has finished.
+where "done" appears when it has finished.  If all is well at the end, you'll get a success message.  If it fails, email the message you get to furnstahl.1@osu.edu.
 
 Some packages might not be found in the default conda channels. One
 can either specify relevant package channel(s) in the environment.yml
