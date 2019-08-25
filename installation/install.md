@@ -2,6 +2,7 @@
 ### Installation of Physics-8805 Jupyter notebooks from GitHub by command line
 
 Go to the location where you want the notebook files.
+
 Download the 8805 repository from GitHub and enter the directory which should have been created on your computer:
 
     git clone https://github.com/furnstahl/Physics-8805.git
