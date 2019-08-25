@@ -22,7 +22,12 @@ which reads the environment.yml file in your current directory (in this case the
        glib-2.58.3          | 3.1 MB    | ##################################### | 100% 
        libcxx-8.0.1         | 1000 KB   | ##################################### | 100% 
        scipy-1.3.1          | 18.1 MB   | ##################################### | 100% 
-etc. (it will not necessarily be in this order).
+etc. (it will be a pretty long list and not necessarily be in this order).  Then you'll see
+
+       Preparing transaction: done
+       Verifying transaction: done
+       Executing transaction: done 
+where "done" appears when it has finished.
 
 Some packages might not be found in the default conda channels. One
 can either specify relevant package channel(s) in the environment.yml
