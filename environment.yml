@@ -17,8 +17,6 @@ dependencies:
 - jupyter_nbextensions_configurator
 - scikit-learn
 - scikit-image
-- cython
-- cythongsl
 - pip
 - pip:
   - gpy
