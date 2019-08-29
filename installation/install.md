@@ -3,7 +3,7 @@
 
 Go to the location where you want the notebook files.
 
-Download the 8805 repository from GitHub and enter the directory which should have been created on your computer:
+Download the 8805 repository from GitHub and enter the directory `Physics-8805` which should have been created on your computer:
 
     git clone https://github.com/furnstahl/Physics-8805.git
     cd Physics-8805
