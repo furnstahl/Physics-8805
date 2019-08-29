@@ -1,3 +1,4 @@
+## Using GitHub and Anaconda environments
 
 ### Installation of Physics-8805 Jupyter notebooks from GitHub by command line
 
@@ -9,6 +10,8 @@ Download the 8805 repository from GitHub and enter the directory `Physics-8805` 
     cd Physics-8805
 
 The notebooks that we will be using depend on several scientific python modules (see the list in environment.yml) and require a python3.x installation based on Anaconda. 
+
+## Creating a conda environment
 
 These python modules and their dependencies are best installed using ``conda`` by creating
 a virtual environment:
