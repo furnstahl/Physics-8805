@@ -60,3 +60,17 @@ Once the environment is set up and activated, you are encouraged to run the test
     jupyter notebook Anaconda_Bayes_test.ipynb
 
 Other notebooks can be found in the subdirectories under topics.
+
+### Updating your conda environment for 8805
+
+Go to the Physics-8805 directory you created by cloning the class repository.  This is where the `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
+You can update to the new environment with:
+
+    conda deactivate
+    conda env update 
+    
+Now if you activate the environment again:
+
+    conda activate 8805-env
+
+you will have access to the new packages.
