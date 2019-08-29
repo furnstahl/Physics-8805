@@ -77,3 +77,11 @@ Now if you activate the environment again:
     conda activate 8805-env
 
 you will have access to the new packages.
+
+### Changing to the `Physics-8805` kernel when running a Jupyter notebook
+
+If you are running the `Physics-8805` kernel, you should see
+
+    Python [conda env:8805-env] *
+
+in the upper right-hand corner of the Jupyter notebook you are running.  If it just says something like `Python 3` then you are not running the `Physics-8805` kernel.  In that case, look under the `Kernel` menu to `Change kernel` and select `Python [conda env:8805-env] *`.  The kernel should restart and indicate the new kernel in the upper corner.
