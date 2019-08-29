@@ -15,7 +15,7 @@ a virtual environment:
 
 	conda env create
 
-which reads the environment.yml file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!  You will see a listing being generated like:
+which reads the `environment.yml` file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!  You will see a listing being generated like:
         
        Downloading and Extracting Packages
        scikit-learn-0.21.3  | 5.9 MB    | ##################################### | 100% 
@@ -63,7 +63,7 @@ Other notebooks can be found in the subdirectories under topics.
 
 ### Updating your conda environment for 8805
 
-Go to the Physics-8805 directory you created by cloning the class repository.  This is where the `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
+Go to the `Physics-8805` directory you created by cloning the class repository.  This is where the relevant `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
 You can update to the new environment with:
 
     conda deactivate
