@@ -66,7 +66,7 @@ Other notebooks can be found in the subdirectories under topics.
 
 ### Updating your conda environment for 8805
 
-Go to the `Physics-8805` directory you created by cloning the class repository.  This is where the relevant `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
+Go to the `Physics-8805` directory you created by cloning the class repository from GitHub.  This is where the relevant `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
 You can update to the new environment with:
 
     conda deactivate
