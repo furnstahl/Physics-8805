@@ -1,21 +1,24 @@
+## Using GitHub and Anaconda environments
 
 ### Installation of Physics-8805 Jupyter notebooks from GitHub by command line
 
 Go to the location where you want the notebook files.
 
-Download the 8805 repository from GitHub and enter the directory which should have been created on your computer:
+Download the 8805 repository from GitHub and enter the directory `Physics-8805` which should have been created on your computer:
 
     git clone https://github.com/furnstahl/Physics-8805.git
     cd Physics-8805
 
 The notebooks that we will be using depend on several scientific python modules (see the list in environment.yml) and require a python3.x installation based on Anaconda. 
 
+## Creating a conda environment
+
 These python modules and their dependencies are best installed using ``conda`` by creating
 a virtual environment:
 
 	conda env create
 
-which reads the environment.yml file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!  You will see a listing being generated like:
+which reads the `environment.yml` file in your current directory (in this case the one in Physics-8805).  This will take a while; be patient!  You will see a listing being generated like:
         
        Downloading and Extracting Packages
        scikit-learn-0.21.3  | 5.9 MB    | ##################################### | 100% 
@@ -60,3 +63,25 @@ Once the environment is set up and activated, you are encouraged to run the test
     jupyter notebook Anaconda_Bayes_test.ipynb
 
 Other notebooks can be found in the subdirectories under topics.
+
+### Updating your conda environment for 8805
+
+Go to the `Physics-8805` directory you created by cloning the class repository from GitHub.  This is where the relevant `environment.yml` file is stored.  This file defines the environment and will be occasionally updated to add additional modules.  
+You can update to the new environment with:
+
+    conda deactivate
+    conda env update 
+    
+Now if you activate the environment again:
+
+    conda activate 8805-env
+
+you will have access to the new packages.
+
+### Changing to the `Physics-8805` env kernel when running a Jupyter notebook
+
+If you are running the `8805-env` kernel, you should see
+
+    Python [conda env:8805-env] *
+
+in the upper right-hand corner of the Jupyter notebook you are running.  If it just says something like `Python 3` then you are not running the `Physics-8805` kernel.  In that case, look under the `Kernel` menu to `Change kernel` and select `Python [conda env:8805-env] *`.  The kernel should restart and indicate the new kernel in the upper corner.
