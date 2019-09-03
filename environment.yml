@@ -18,6 +18,7 @@ dependencies:
 - jupyter_nbextensions_configurator
 - scikit-learn
 - scikit-image
+- rise
 - pip
 - pip:
   - gpy
