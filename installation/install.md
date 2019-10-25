@@ -19,9 +19,10 @@ a virtual environment:
 	conda env create
 
 which reads the `environment.yml` file in your current directory (in this case the one in Physics-8805). 
-(To use a different file name such as `other_environmet.yml`: `conda env create -f other_environment.yml`)
 
-This will take a while; be patient!  You will see a listing being generated like:
+To use a different file name such as `other_environmet.yml`: `conda env create -f other_environment.yml`
+
+It will take a while to generate the new environment; be patient!  You will see a listing being generated like:
         
        Downloading and Extracting Packages
        scikit-learn-0.21.3  | 5.9 MB    | ##################################### | 100% 
