@@ -37,6 +37,8 @@ dependencies:
   - gpy
   - gpyopt  
   - pymultinest
+  - arviz
+  
 
 
 
