@@ -1,6 +1,7 @@
 name: 8805-env-windows
 channels:
 - conda-forge
+- anaconda
 dependencies:
 - python=3.7
 - nb_conda_kernels
