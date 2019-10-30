@@ -32,7 +32,7 @@ dependencies:
 - theano
 - pymc3
 - parameterized
--arviz
+- arviz
 - pip
 - pip:
   - gpy
