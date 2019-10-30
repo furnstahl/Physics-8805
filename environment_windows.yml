@@ -32,13 +32,13 @@ dependencies:
 - theano
 - pymc3
 - parameterized
+-arviz
 - pip
 - pip:
   - gpy
   - gpyopt  
   - pymultinest
-  - arviz
-  
+
 
 
 
