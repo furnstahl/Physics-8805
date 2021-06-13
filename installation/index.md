@@ -4,7 +4,7 @@
 
 ### Setup python environment: 
 
-See the [installation instructions](install.md).
+See the [installation instructions](install.md). 
 
 ### Update conda python environment 
 
