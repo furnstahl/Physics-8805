@@ -1,0 +1,983 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.3. Lecture 10 &#8212; Learning from data</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.4. Parameter estimation example: fitting a straight line II" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html" />
+    <link rel="prev" title="4.2. A Bayesian Billiard game" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Learning from data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about.html">
+   About this Jupyter Book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Course overview
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Course/overview.html">
+   Objectives
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Basics/basics.html">
+   1. Basics of Bayesian statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_01.html">
+     1.1. Lecture 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">
+     1.2. Exploring PDFs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">
+     1.3. Checking the sum and product rules, and their consequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_02.html">
+     1.4. Lecture 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">
+     1.5. Interactive Bayesian updating: coin flipping example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">
+     1.6. Standard medical example by applying Bayesian rules of probability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">
+     1.7. Radioactive lighthouse problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_03.html">
+     1.8. Lecture 3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Parameter_estimation/param_est.html">
+   2. Bayesian parameter estimation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_04.html">
+     2.1. Lecture 4: Parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html">
+     2.2. Parameter estimation example: Gaussian noise and averages
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_extending_radioactive_lighthouse.html">
+     2.3. Assignment: 2D radioactive lighthouse location using MCMC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_05.html">
+     2.4. Lecture 5
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
+     2.5. Parameter estimation example: fitting a straight line
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/demo-ModelValidation.html">
+     2.6. Linear Regression and Model Validation demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_06.html">
+     2.7. Lecture 6
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/amplitude_in_presence_of_background.html">
+     2.8. Amplitude of a signal in the presence of background
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_parameter_estimation_followups.html">
+     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/exercise_LinearRegression.html">
+     2.10. Linear Regression exercise
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/linear_algebra_games_I.html">
+     2.11. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
+     2.12. Follow-up: fluctuation trends with # of points and data errors
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_I/MCMC_sampling_I.html">
+   3. MCMC sampling I
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_07.html">
+     3.1. Lecture 7
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/Metropolis_Poisson_example.html">
+     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_08.html">
+     3.3. Lecture 8
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
+     3.4. Exercise: Random walk
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="bayes_is_better.html">
+   4. Why Bayes is better
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_09.html">
+     4.1. Lecture 9
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html">
+     4.2. A Bayesian Billiard game
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     4.3. Lecture 10
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
+     4.4. Parameter estimation example: fitting a straight line II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_11.html">
+     4.5. Lecture 11
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
+     4.6. Error propagation: Example 3.6.2 in Sivia
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html">
+     4.7. Visualization of the Central Limit Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/correlation_intuition.html">
+     4.8. Building intuition about correlations (and a bit of Python linear algebra)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_12.html">
+     4.9. Lecture 12
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html">
+     4.10. Overview: MCMC Diagnostics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_13.html">
+     4.12. Lecture 13
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/dealing_with_outliers.html">
+     4.13. Dealing with outliers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Model_selection/model_selection.html">
+   5. Model selection
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_14.html">
+     5.1. Lecture 14
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_15.html">
+     5.2. Lecture 15
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Model_selection/Evidence_for_model_EFT_coefficients.html">
+     5.3. Evidence calculation for EFT expansions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_16.html">
+     5.4. Lecture 16
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_II/MCMC_sampling_II.html">
+   6. MCMC sampling II
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Liouville_theorem_visualization.html">
+     6.1. Liouville Theorem Visualization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
+     6.2. Solving orbital equations with different algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro.html">
+     6.4. PyMC3 Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started.html">
+     6.5. Getting started with PyMC3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Gaussian_processes/gaussian_processes.html">
+   7. Gaussian processes
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/demo-GaussianProcesses.html">
+     7.1. Gaussian processes demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/GaussianProcesses.html">
+     7.2. Learning from data: Gaussian processes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/Gaussian_processes_exercises.html">
+     7.3. Exercise: Gaussian Process models with GPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Emulators/emulators.html">
+   8. Emulators
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Maximum_entropy/max_ent.html">
+   9. Assigning probabilities
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/demo-MaxEnt.html">
+     9.1. Assigning probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt.html">
+     9.2. Ignorance pdfs: Indifference and translation groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/Pdfs_from_MaxEnt.html">
+     9.3. MaxEnt for deriving probability distributions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt_Function_Reconstruction.html">
+     9.4. Maximum Entropy for reconstructing a function from its moments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Machine_learning/machine_learning.html">
+   10. Machine learning: Bayesian methods
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Machine_learning/Bayesian_optimization.html">
+     10.1. Physics 8805
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../SVD/svd.html">
+   11. PCA, SVD, and all that
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/SVD/linear_algebra_games_including_SVD.html">
+     11.1. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Model_mixing/model_mixing.html">
+   12. Model mixing
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Mini-projects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/mini-project_I_toy_model_of_EFT.html">
+   Mini-project I: Parameter estimation for a toy model of an EFT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/model-selection_mini-project-IIa.html">
+   Mini-project IIa: Model selection basics
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Reference material
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../zbibliography.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../related_topics.html">
+   Related topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/installing_anaconda.html">
+   Using Anaconda
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/using_github.html">
+   Using GitHub
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Reference/python_jupyter.html">
+   Python and Jupyter notebooks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_01.html">
+     Python and Jupyter notebooks: part 01
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_02.html">
+     Python and Jupyter notebooks: part 02
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../jb_tests.html">
+   Examples: Jupyter jb-book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Notebook keys
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule_KEY.html">
+   Checking the sum and product rules, and their consequences
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes_KEY.html">
+   Standard medical example by applying Bayesian rules of probability
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise_key.html">
+   Radioactive lighthouse problem
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Why_Bayes_is_better/lecture_10.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fcontent/Why_Bayes_is_better/lecture_10.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nuisance-parameters-ii">
+   Nuisance parameters (II)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bayesian-workflow-statistical-model">
+     Bayesian workflow: statistical model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#maximum-likelihood-estimate-mle">
+     1. Maximum likelihood estimate (MLE)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#single-parameter-inference">
+     2. Single-parameter inference
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#full-bayesian-analysis">
+     3. Full Bayesian analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#error-propagation-marginalization">
+   Error propagation: marginalization
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="lecture-10">
+<h1><span class="section-number">4.3. </span>Lecture 10<a class="headerlink" href="#lecture-10" title="Permalink to this headline">¶</a></h1>
+<p>We continue with more examples of why Bayes is better!</p>
+<div class="section" id="nuisance-parameters-ii">
+<h2>Nuisance parameters (II)<a class="headerlink" href="#nuisance-parameters-ii" title="Permalink to this headline">¶</a></h2>
+<p>Here we return to the standard problem of fitting a straight line, this time for a real physics case: velocities (the <span class="math notranslate nohighlight">\(y\)</span> variables) and distances (the <span class="math notranslate nohighlight">\(x\)</span> variables) for a set of galaxies.</p>
+<ul class="simple">
+<li><p>A constant standard deviation of <span class="math notranslate nohighlight">\(\sigma = 200\,\mbox{km/sec}\)</span> is given for the <span class="math notranslate nohighlight">\(y\)</span> values and no error is given for <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+<li><p>The question: What value and error should we adopt for the Hubble constant (the slope), assuming we believe that a straight line is a valid model? Further, we don’t care about the intercept; indeed, the model is <span class="math notranslate nohighlight">\(v = H_0 x\)</span>. So the intercept will be a <em>nuisance parameter</em>.</p></li>
+</ul>
+<p>We’ll compare three estimates in this notebook:
+<a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html"><span class="doc std std-doc">Finding the slope of a straight line (part II)</span></a>
+The three approaches are:</p>
+<ol class="simple">
+<li><p>Maximum likelihood estimate</p></li>
+<li><p>Single-parameter inference</p></li>
+<li><p>Full Bayesian analysis</p></li>
+</ol>
+<p>Work through the notebook. What follows are some summary notes.</p>
+<div class="section" id="bayesian-workflow-statistical-model">
+<h3>Bayesian workflow: statistical model<a class="headerlink" href="#bayesian-workflow-statistical-model" title="Permalink to this headline">¶</a></h3>
+<p>We will be developing a Bayesian workflow as we proceed through the course. A key step will be to make a statistical model.
+But rather than defer this step fully to part 3. Full Bayesian analysis, we will give some of the details up front to use them in the other approaches but return to the particularly Bayesian framing below.</p>
+<p>For the model we follow the procedure outlined in <span class="xref myst">parameter_estimation_fitting_straight_line_I.ipynb</span>.
+Our theoretical model <span class="math notranslate nohighlight">\(y_M(x)\)</span> is a straight line,</p>
+<div class="math notranslate nohighlight">
+\[
+y_M(x) = mx + b
+\]</div>
+<p>with the parameter vector <span class="math notranslate nohighlight">\(\thetavec\)</span> to be determined:</p>
+<div class="math notranslate nohighlight">
+\[
+\thetavec = [b, m].
+\]</div>
+<p>The data here has simple error bars, which is associated with a normal (Gaussian) distribution that is independent for each point. So each data point has a distribution about a mean that is the “true” straight line (at this stage there is no theoretical error assumed, so in the absence of the experimental error the data and theory should match). In particular,</p>
+<div class="math notranslate nohighlight">
+\[
+y_i \sim \mathcal{N}(y_M(x_i;\thetavec), \sigma)
+\]</div>
+<p>or, in other words,</p>
+<div class="math notranslate nohighlight">
+\[
+p(y_i\mid x_i,\thetavec) = \frac{1}{\sqrt{2\pi\varepsilon_i^2}} \exp\left(\frac{-\left[y_i - y_M(x_i;\thetavec)\right]^2}{2\varepsilon_i^2}\right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\varepsilon_i\)</span> are the (known) measurement errors indicated by the error bars.
+Given the assumption of independent error, the likelihood is the product of likelihoods for each point:</p>
+<div class="math notranslate nohighlight">
+\[
+p(D\mid\thetavec) = \prod_{i=1}^N p(x_i,y_i\mid\thetavec) .
+\]</div>
+</div>
+<div class="section" id="maximum-likelihood-estimate-mle">
+<h3>1. Maximum likelihood estimate (MLE)<a class="headerlink" href="#maximum-likelihood-estimate-mle" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Write the log likelihood based on the expressions from the last part:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+ \log(p(D|\thetavec)) = -\frac{1}{2}\sum_{i=1}^N
+   \left(\log(2\pi\epsilon_i^2) + \frac{\bigl(y_i - y_m(x_i;\thetavec)\bigr)^2}{\epsilon_i^2}\right)
+\]</div>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">scipy.optimize</span></code>, obtaining a covariance matrix for the errors in the fit (more on this later).</p></li>
+<li><p>Here <span class="math notranslate nohighlight">\(\thetavec = [b, H_0]\)</span>.</p></li>
+<li><p>Result: <span class="math notranslate nohighlight">\(b = -26.7 \pm 136.6\)</span> and <span class="math notranslate nohighlight">\(H_0 = 80.5 \pm 7.4\)</span></p></li>
+<li><p>We note that the result for the intercept is consistent with zero within the uncertainty. As already noted, the actual model we have in mind is <span class="math notranslate nohighlight">\(v = H_0 x\)</span>, so <span class="math notranslate nohighlight">\(b=0\)</span>. What does it mean that we allow for a non-zero <span class="math notranslate nohighlight">\(b\)</span>?
+This is part of our statistical model, with <span class="math notranslate nohighlight">\(b\)</span> being associated with either a theoretical or experimental uncertainty (a systematic error in particular).</p></li>
+</ul>
+</div>
+<div class="section" id="single-parameter-inference">
+<h3>2. Single-parameter inference<a class="headerlink" href="#single-parameter-inference" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The idea here is that since we don’t care about <span class="math notranslate nohighlight">\(b\)</span>, maybe we should fix it to the maximum likelihood estimate (MLE), leaving a one-parameter fitting problem to solve.</p></li>
+<li><p>We calculate the likelihood given this value, and maximize it and find the 68% uncertainty estimate:
+<span class="math notranslate nohighlight">\(H_0 = 80.5 \pm 3.8\)</span></p></li>
+<li><p>We expect that this approach will <em>underestimate</em> the slope uncertainty, because we have assumed that the intercept is known precisely rather than allow for some slop.
+The uncertainty is about half what it was in the full MLE estimate.</p></li>
+</ul>
+</div>
+<div class="section" id="full-bayesian-analysis">
+<h3>3. Full Bayesian analysis<a class="headerlink" href="#full-bayesian-analysis" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>We start with our goal, which is to find <span class="math notranslate nohighlight">\(H_0\)</span> given the data.
+We use the statistical model described earlier, which means that we introduce the intercept <span class="math notranslate nohighlight">\(b\)</span> as a nuisance parameter.
+For now we include it as part of <span class="math notranslate nohighlight">\(\thetavec\)</span> and seek <span class="math notranslate nohighlight">\(p(\thetavec|D,I)\)</span>.</p></li>
+<li><p>We apply Bayes’ theorem to write the desired pdf as being proportional to the likelihood <span class="math notranslate nohighlight">\(p(D\mid\thetavec)\)</span> times the
+prior <span class="math notranslate nohighlight">\(p(\thetavec|I)\)</span> (and the normalization from the denominator doesn’t affect our sampling).</p></li>
+<li><p>We have the same statistical model, so it leads us to the same likelihood as above.</p></li>
+<li><p>For the <span class="math notranslate nohighlight">\(\thetavec\)</span> priors we take the symmetric (scale invariant) prior for the slope (recall the earlier discussion of how a uniform distribution in <span class="math notranslate nohighlight">\(m\)</span> will bias the slope toward steep values) and a normal distribution with mean zero and standard deviation <span class="math notranslate nohighlight">\(\sigma = 200\)</span> for the intercept.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">emcee</span></code> to do the sampling.</p>
+<ul>
+<li><p>What happened in the posterior plot? <span class="math notranslate nohighlight">\(\Lra\)</span> chains take a while to converge <span class="math notranslate nohighlight">\(\Lra\)</span> this is the warm-up or burn-in time we need to skip. In this case we started with the slope <span class="math notranslate nohighlight">\(m = H_0\)</span> equal to zero, which is far from the equilibrated region.</p></li>
+<li><p>Look at the traces of individual MCMC chains for <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p>Choose a warm-up skip of 200 to be conservative.</p></li>
+<li><p>Plot 1,2,3 sigma levels; the smoothness of the contour level curves reflects how many MCMC samples we use (use more for smoother contour lines).</p></li>
+</ul>
+</li>
+<li><p>Next we need to eliminate the nuisance parameter <span class="math notranslate nohighlight">\(b\)</span> by marginalization. Marginalization over a nuisance parameter is extremely simple with MCMC.</p>
+<ul>
+<li><p>Want <span class="math notranslate nohighlight">\(p(\theta_1|D,I) = \int d\theta_0\, p(\theta_0,\theta_1 | D,I)\)</span></p></li>
+<li><p>The output from the MCMC sampler is an array of <span class="math notranslate nohighlight">\(N\)</span> samples (after we have discarded the warm-up samples). In this case, the first column consists of the <span class="math notranslate nohighlight">\(N\)</span> values of <span class="math notranslate nohighlight">\(\theta_0 = b\)</span> and the second column consists of the <span class="math notranslate nohighlight">\(N\)</span> values of <span class="math notranslate nohighlight">\(\theta_1 = m = H_0\)</span>.</p></li>
+<li><p>To marginalize over <span class="math notranslate nohighlight">\(\theta_0\)</span>, simply ignore that column and keep the <span class="math notranslate nohighlight">\(\theta_{1,i}\)</span> samples!</p></li>
+<li><p>In the code, these samples are given by
+<code class="docutils literal notranslate"><span class="pre">slope_samples</span> <span class="pre">=</span> <span class="pre">emcee_trace[1,:]</span></code> and the mean and standard 68% intervals are directly calculated from these.</p></li>
+</ul>
+</li>
+<li><p>The summary of results for <span class="math notranslate nohighlight">\(H_0\)</span> is</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  \mbox{MLE (1$\sigma$):}&amp;\ \ 80.5 \pm 7.4 \\
+  \mbox{Fixed intercept (1$\sigma$):}&amp;\ \ 80.5 \pm 3.8 \\
+  \mbox{Bayesian (68% credible regions):}&amp;\ \ 78.2\ (6.8,-6.3)
+\end{align}\end{split}\]</div>
+<ul class="simple">
+<li><p>The Bayesian result plotted in the notebook does not appear consistent with the data: the 68% regions do not intercept the error bars 68% of the time (more like 50%) and some points are way off. As part of our Bayesian model checking step (more later!) we would follow-up. Perhaps the data errors are underestimated, or there are outliers, or the theory error is underestimated.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="error-propagation-marginalization">
+<h2>Error propagation: marginalization<a class="headerlink" href="#error-propagation-marginalization" title="Permalink to this headline">¶</a></h2>
+<p>We will use the Hubble constant example to illustrate how we propagate errors.
+The set-up is that we have determined a posterior for <span class="math notranslate nohighlight">\(H_0\)</span>, which is a probability distribution rather than a definite value (i.e., it has uncertainties, which we generically refer to as errors).
+Now we want to apply <span class="math notranslate nohighlight">\(H_0\)</span> to determine the distance to a galaxy based on applying the equation for the velocity</p>
+<div class="math notranslate nohighlight">
+\[
+   v = H_0 x 
+\]</div>
+<p>to find <span class="math notranslate nohighlight">\(x\)</span> given a measurement of <span class="math notranslate nohighlight">\(v\)</span>.
+<span class="math notranslate nohighlight">\(x\)</span> will have uncertainties because of the uncertainty in <span class="math notranslate nohighlight">\(v\)</span> <em>and</em> the uncertainty in <span class="math notranslate nohighlight">\(H_0\)</span>.
+How do we propagate the error from <span class="math notranslate nohighlight">\(H_0\)</span> to <span class="math notranslate nohighlight">\(x\)</span>  (i.e., combine with the error from <span class="math notranslate nohighlight">\(v\)</span>)?</p>
+<p>More precisely for the Bayesian formulation (choosing a definite case), given <span class="math notranslate nohighlight">\(v_{\text measured} = (100\pm 5) \times 10^3\,\)</span>km/sec and the posterior for <span class="math notranslate nohighlight">\(H_0\)</span>, what is the posterior pdf for the distance to the galaxy?</p>
+<p>The implementation is in Step 4 of the notebook:
+<a class="reference external" href="/notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.ipynb#step-4-error-propagation">Finding the slope of a straight line (part II)</a></p>
+<p>The error is calculated two ways:</p>
+<ol class="simple">
+<li><p>Using the fixed value of <span class="math notranslate nohighlight">\(H_0\)</span> from the mean of the previous analysis.</p></li>
+<li><p>Using the full sampled posterior.</p></li>
+</ol>
+<p>The statistical model is:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(v_{\text {exp}} = v_{\text{th}} + \delta v_{\text {exp}}\)</span></p></li>
+<li><p>The theory model is <span class="math notranslate nohighlight">\(v_{\text {th}} = H_0 x\)</span></p></li>
+<li><p>The experimental error in <span class="math notranslate nohighlight">\(v\)</span> is assumed to be <span class="math notranslate nohighlight">\(\delta v_{\text {exp}} \sim \mathcal{N(0,\sigma_v^2)}\)</span>, i.e., it is normally distributed with standard deviation <span class="math notranslate nohighlight">\(\sigma_v = 5\times 10^3\,\)</span>km/s.</p></li>
+<li><p>We assume the measurement error in <span class="math notranslate nohighlight">\(v\)</span> (i.e., <span class="math notranslate nohighlight">\(\delta v_{\text {exp}}\)</span>) is uncorrelated with the error in <span class="math notranslate nohighlight">\(H_0\)</span>. Note that this should not be an arbitrary assumption but validated by the physics set-up.</p></li>
+</ul>
+<p>Case 1: fixed <span class="math notranslate nohighlight">\(H_0\)</span></p>
+<ul class="simple">
+<li><p>Take a uniform prior for <span class="math notranslate nohighlight">\(x\)</span>: <span class="math notranslate nohighlight">\(p(x|I)\)</span> uniform in <span class="math notranslate nohighlight">\([x_{\text {min}},x_{\text {max}}]\)</span>.</p></li>
+<li><p>Bayes’ theorem tells us, with the data <span class="math notranslate nohighlight">\(D\)</span> being <span class="math notranslate nohighlight">\(v_{\text {exp}}\)</span> and <span class="math notranslate nohighlight">\(I\)</span> including <span class="math notranslate nohighlight">\(H_0 = \Hhat_0\)</span> and <span class="math notranslate nohighlight">\(\delta v_{\text {exp}}\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  p(x | D, I) &amp;\propto p(D| x, I) p(x |I) \\
+              &amp;\propto \frac{1}{\sqrt{2\pi}\sigma_v}
+                 e^{-(v_{\text {exp}} - v_{\text {th}})^2/2\sigma_v^2}
+                 p(x|I) \\
+              &amp;\propto
+              \frac{1}{\sqrt{2\pi}\sigma_v}
+                 e^{-(v_{\text {exp}} - \Hhat_0 x)^2/2\sigma_v^2}
+              \quad\mbox{for}\ x_{\text {min}} &lt; x &lt; x_{\text {max}}
+              .
+\end{align}\end{split}\]</div>
+<p>Case 2: using the inferred pdf for <span class="math notranslate nohighlight">\(H_0\)</span></p>
+<ul class="simple">
+<li><p>Here we need to introduce information on <span class="math notranslate nohighlight">\(H_0\)</span>. This could be a function (e.g., a specified normal distribution) or just a set of samples <span class="math notranslate nohighlight">\(\{H_0^{(i)}\}_{i=1}^N\)</span> generated by our MCMC sampler.</p></li>
+<li><p>As always, we use marginalization (and the product rule, Bayes’ rule, etc.).</p></li>
+<li><p>The steps are (fill in justifications)</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  p(x|D,I) &amp;=  \int dH_0\, p(x,H_0|D,I) \\
+    &amp;\propto \int dH_0\, p(D|x,H_0,I) p(x,H_0| I) \\
+    &amp; \propto \int dH_0\, p(D|x,H_0,I) p(x|I) p(H_0|I) \\
+    &amp; \propto p(x|I) \int dH_0\, p(H_0|I) p(D|x,H_0,I)
+\end{align}\end{split}\]</div>
+<p>We have used: marginalization, Bayes’ rule, <span class="math notranslate nohighlight">\(H_0\)</span> independent of <span class="math notranslate nohighlight">\(x\)</span>; anything else?
+The likelihood <span class="math notranslate nohighlight">\(p(D|x,H_0,I)\)</span> was given in case 1 for a particular <span class="math notranslate nohighlight">\(H_0\)</span>.</p>
+<ul class="simple">
+<li><p>If we use <span class="math notranslate nohighlight">\(H_0\)</span> samples, then the integral over <span class="math notranslate nohighlight">\(H_0\)</span> turns in to a simple sum over the marginalized samples:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  p(x | D,I) \approx \frac{1}{N}\sum_{i=1}^{N}
+     p(D | x, H_0^{(i)}, I)
+\]</div>
+<p>See the notebook for the comparison.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "furnstahl/Physics-8820",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./content/Why_Bayes_is_better"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html" title="previous page"><span class="section-number">4.2. </span>A Bayesian Billiard game</a>
+    <a class='right-next' id="next-link" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html" title="next page"><span class="section-number">4.4. </span>Parameter estimation example: fitting a straight line II</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dick Furnstahl<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

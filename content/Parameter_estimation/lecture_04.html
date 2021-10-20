@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2.1. Lecture 4: Parameter estimation &#8212; Learning from data</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.2. Parameter estimation example: Gaussian noise and averages" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html" />
+    <link rel="prev" title="2. Bayesian parameter estimation" href="param_est.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Learning from data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about.html">
+   About this Jupyter Book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Course overview
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Course/overview.html">
+   Objectives
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Basics/basics.html">
+   1. Basics of Bayesian statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_01.html">
+     1.1. Lecture 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">
+     1.2. Exploring PDFs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">
+     1.3. Checking the sum and product rules, and their consequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_02.html">
+     1.4. Lecture 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">
+     1.5. Interactive Bayesian updating: coin flipping example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">
+     1.6. Standard medical example by applying Bayesian rules of probability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">
+     1.7. Radioactive lighthouse problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_03.html">
+     1.8. Lecture 3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="param_est.html">
+   2. Bayesian parameter estimation
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     2.1. Lecture 4: Parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html">
+     2.2. Parameter estimation example: Gaussian noise and averages
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_extending_radioactive_lighthouse.html">
+     2.3. Assignment: 2D radioactive lighthouse location using MCMC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_05.html">
+     2.4. Lecture 5
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
+     2.5. Parameter estimation example: fitting a straight line
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/demo-ModelValidation.html">
+     2.6. Linear Regression and Model Validation demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_06.html">
+     2.7. Lecture 6
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/amplitude_in_presence_of_background.html">
+     2.8. Amplitude of a signal in the presence of background
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_parameter_estimation_followups.html">
+     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/exercise_LinearRegression.html">
+     2.10. Linear Regression exercise
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/linear_algebra_games_I.html">
+     2.11. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
+     2.12. Follow-up: fluctuation trends with # of points and data errors
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_I/MCMC_sampling_I.html">
+   3. MCMC sampling I
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_07.html">
+     3.1. Lecture 7
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/Metropolis_Poisson_example.html">
+     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_08.html">
+     3.3. Lecture 8
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
+     3.4. Exercise: Random walk
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Why_Bayes_is_better/bayes_is_better.html">
+   4. Why Bayes is better
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Why_Bayes_is_better/lecture_09.html">
+     4.1. Lecture 9
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html">
+     4.2. A Bayesian Billiard game
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Why_Bayes_is_better/lecture_10.html">
+     4.3. Lecture 10
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
+     4.4. Parameter estimation example: fitting a straight line II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Why_Bayes_is_better/lecture_11.html">
+     4.5. Lecture 11
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
+     4.6. Error propagation: Example 3.6.2 in Sivia
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html">
+     4.7. Visualization of the Central Limit Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/correlation_intuition.html">
+     4.8. Building intuition about correlations (and a bit of Python linear algebra)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Why_Bayes_is_better/lecture_12.html">
+     4.9. Lecture 12
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html">
+     4.10. Overview: MCMC Diagnostics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Why_Bayes_is_better/lecture_13.html">
+     4.12. Lecture 13
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/dealing_with_outliers.html">
+     4.13. Dealing with outliers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Model_selection/model_selection.html">
+   5. Model selection
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_14.html">
+     5.1. Lecture 14
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_15.html">
+     5.2. Lecture 15
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Model_selection/Evidence_for_model_EFT_coefficients.html">
+     5.3. Evidence calculation for EFT expansions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_16.html">
+     5.4. Lecture 16
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_II/MCMC_sampling_II.html">
+   6. MCMC sampling II
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Liouville_theorem_visualization.html">
+     6.1. Liouville Theorem Visualization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
+     6.2. Solving orbital equations with different algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro.html">
+     6.4. PyMC3 Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started.html">
+     6.5. Getting started with PyMC3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Gaussian_processes/gaussian_processes.html">
+   7. Gaussian processes
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/demo-GaussianProcesses.html">
+     7.1. Gaussian processes demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/GaussianProcesses.html">
+     7.2. Learning from data: Gaussian processes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/Gaussian_processes_exercises.html">
+     7.3. Exercise: Gaussian Process models with GPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Emulators/emulators.html">
+   8. Emulators
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Maximum_entropy/max_ent.html">
+   9. Assigning probabilities
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/demo-MaxEnt.html">
+     9.1. Assigning probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt.html">
+     9.2. Ignorance pdfs: Indifference and translation groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/Pdfs_from_MaxEnt.html">
+     9.3. MaxEnt for deriving probability distributions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt_Function_Reconstruction.html">
+     9.4. Maximum Entropy for reconstructing a function from its moments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Machine_learning/machine_learning.html">
+   10. Machine learning: Bayesian methods
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Machine_learning/Bayesian_optimization.html">
+     10.1. Physics 8805
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../SVD/svd.html">
+   11. PCA, SVD, and all that
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/SVD/linear_algebra_games_including_SVD.html">
+     11.1. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Model_mixing/model_mixing.html">
+   12. Model mixing
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Mini-projects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/mini-project_I_toy_model_of_EFT.html">
+   Mini-project I: Parameter estimation for a toy model of an EFT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/model-selection_mini-project-IIa.html">
+   Mini-project IIa: Model selection basics
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Reference material
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../zbibliography.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../related_topics.html">
+   Related topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/installing_anaconda.html">
+   Using Anaconda
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/using_github.html">
+   Using GitHub
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Reference/python_jupyter.html">
+   Python and Jupyter notebooks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_01.html">
+     Python and Jupyter notebooks: part 01
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_02.html">
+     Python and Jupyter notebooks: part 02
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../jb_tests.html">
+   Examples: Jupyter jb-book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Notebook keys
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule_KEY.html">
+   Checking the sum and product rules, and their consequences
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes_KEY.html">
+   Standard medical example by applying Bayesian rules of probability
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise_key.html">
+   Radioactive lighthouse problem
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Parameter_estimation/lecture_04.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fcontent/Parameter_estimation/lecture_04.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview-comments">
+   Overview comments
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-can-go-wrong-in-a-fit">
+   What can go wrong in a fit?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notebook-gaussian-noise">
+   Notebook: Gaussian noise
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notebook-fitting-a-line">
+   Notebook: Fitting a line
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-gaussians-tend-to-show-up">
+   Why Gaussians tend to show up
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bayesian-vs-frequentist-confidence-interval">
+   Bayesian vs. Frequentist confidence interval
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="lecture-4-parameter-estimation">
+<h1><span class="section-number">2.1. </span>Lecture 4: Parameter estimation<a class="headerlink" href="#lecture-4-parameter-estimation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview-comments">
+<h2>Overview comments<a class="headerlink" href="#overview-comments" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In general terms, “parameter estimation” in physics means obtaining values for parameters (i.e., constants) that appear in a theoretical model that describes data. (Exceptions exist, of course.)</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>couplings in a Hamiltonian</p></li>
+<li><p>coefficients of a polynomial or exponential model of data</p></li>
+<li><p>parameters describing a peak in a measured spectrum, such as the peak height and width (e.g., fitting a Lorentzian line shape) and the size of the background</p></li>
+<li><p>cosmological parameters such as the Hubble constant</p></li>
+</ul>
+</li>
+<li><p>Conventionally this process is known as “fitting the parameters” and the goal is to find the “best fit” and maybe error bars.</p></li>
+<li><p>We will make particular interpretations of these phrases from our Bayesian point of view.</p></li>
+<li><p>Plan: set up the problem and look at how familiar ideas like “least-squares fitting” show up from a Bayesian perspective.</p></li>
+<li><p>As we proceed, we’ll make the case that for physics a Bayesian approach is particular well suited.</p></li>
+</ul>
+</div>
+<div class="section" id="what-can-go-wrong-in-a-fit">
+<h2>What can go wrong in a fit?<a class="headerlink" href="#what-can-go-wrong-in-a-fit" title="Permalink to this headline">¶</a></h2>
+<p>As a teaser, let’s ask: what can go wrong in a fit?</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/over_under_fitting_cartoon.png"><img alt="bootstrapping" class="bg-primary align-center" src="../../_images/over_under_fitting_cartoon.png" style="width: 400px;" /></a>
+<p>Bayesian methods can identify and prevent both underfitting (model is not complex enough to describe the fit data) or overfitting (model tunes to data fluctuations or terms are underdetermined, leading to them playing off each other).<br />
+<span class="math notranslate nohighlight">\(\Longrightarrow\)</span> we’ll see how this plays out.</p>
+</div>
+<div class="section" id="notebook-gaussian-noise">
+<h2>Notebook: Gaussian noise<a class="headerlink" href="#notebook-gaussian-noise" title="Permalink to this headline">¶</a></h2>
+<p>Let’s step through <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html"><span class="doc std std-doc">Parameter estimation example: Gaussian noise and averages</span></a>.</p>
+<ul>
+<li><p>Import of modules</p>
+<ul class="simple">
+<li><p>Using seaborn just to make nice graphs</p></li>
+<li><p>We’ll use emcee here (cf. “MC” <span class="math notranslate nohighlight">\(\rightarrow\)</span> “Monte Carlo”) to do the sampling.</p></li>
+<li><p>corner is used to make a particular type of plot.</p></li>
+</ul>
+</li>
+<li><p>Example from Sivia’s book <span id="id1">[<a class="reference internal" href="../zbibliography.html#id9">SS06</a>]</span>: Gaussian noise and averages.</p>
+<div class="math notranslate nohighlight">
+\[
+      p(x | \mu,\sigma) = \frac{1}{\sqrt{2\pi\sigma^2}}
+         e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+    \]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are given and the pdf is normalized (<span class="math notranslate nohighlight">\(\int_{-\infty}^{+\infty} \frac{1}{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/2\sigma^2} dx = 1\)</span>).</p>
+<div class="admonition-question admonition">
+<p class="admonition-title">Question</p>
+<p>What are the dimensions of this pdf?</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Answer</p>
+<p>one over length (<span class="math notranslate nohighlight">\(1/x\)</span>) or one over what units <span class="math notranslate nohighlight">\(x\)</span> is in.</p>
+</div>
+</div>
+<p>Its justification as a theoretical model is via maximum entropy, the “central limit theorem” (CLT), or general considerations, all of which we will come back to in the future.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(M\)</span> data measurements <span class="math notranslate nohighlight">\(D \equiv \{x_k\} = (x_1, \ldots, x_M)\)</span> (e.g., <span class="math notranslate nohighlight">\(M=100\)</span>), distributed according to <span class="math notranslate nohighlight">\(p(x|\mu,\sigma)\)</span> (that implies that if you histogrammed the samples, they would roughly look like the Gaussian).</p></li>
+<li><p>How do we get such measurements? As in the <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html"><span class="doc std std-doc">Exploring PDFs</span></a> notebook, we “sample” from <span class="math notranslate nohighlight">\(\mathcal{N}(\mu,\sigma^2)\)</span>.</p></li>
+<li><p>Goal: given the measurements <span class="math notranslate nohighlight">\(D\)</span>, find the approximate <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<ul class="simple">
+<li><p>Frequentist: use the maximum likelihood method</p></li>
+<li><p>Bayesian: compute posterior pdf <span class="math notranslate nohighlight">\(p(\mu,\sigma|D,I)\)</span></p></li>
+</ul>
+</li>
+<li><p>Random seed of 1 means the same series of “random” numbers are used every time you repeat. If you put 2 or 42, then a different series from 1 will be used, but still the same with every run that has that seed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stats.norm.rvs</span></code> (“norm” for normal or Gaussian distribution; “rvs” for random variates) as in <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html"><span class="doc std std-doc">Exploring PDFs</span></a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size=M</span></code> is a “keyword argument” (often <code class="docutils literal notranslate"><span class="pre">kw</span></code> <span class="math notranslate nohighlight">\(\equiv\)</span> keyword), which means it is optional and there is a default value (here the default is <span class="math notranslate nohighlight">\(M=1\)</span>).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shift-tab-tab</span></code> after evaluating a cell will give you information</p>
+<ul class="simple">
+<li><p>e.g., put your cursor on “norm” or “rvs” and <code class="docutils literal notranslate"><span class="pre">shift-tab-tab</span></code> will tell you all about these.</p></li>
+</ul>
+</li>
+<li><p>The output <span class="math notranslate nohighlight">\(D\)</span> is a numpy array. (Everything in Python is an <em>object</em>, so more than just a datatype, there are methods that go with these arrays.)</p>
+<ul class="simple">
+<li><p>Put your cursor just after <code class="docutils literal notranslate"><span class="pre">D</span></code> and <code class="docutils literal notranslate"><span class="pre">shift-tab-tab</span></code></p></li>
+<li><p><span class="math notranslate nohighlight">\([\cdots]\)</span> when printed.</p></li>
+</ul>
+</li>
+<li><p>Consider the number of entries in the tails, say beyond <span class="math notranslate nohighlight">\(2\sigma\)</span> <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> <span class="math notranslate nohighlight">\(x&gt;12\)</span> or <span class="math notranslate nohighlight">\(x &lt; 8\)</span>.</p>
+<ul class="simple">
+<li><p>How many do you expect <em>on average</em>? <span class="math notranslate nohighlight">\(2\sigma\)</span> means about 95%, so about 5/100.</p></li>
+<li><p>Here there are 4 in that range. If there were zero is there a bug? No, there is a chance that will happen!</p></li>
+</ul>
+</li>
+<li><p>Note the pattern (or lack of pattern) and repeat to get different numbers. (How? Change the random seed from 1.) Always play!</p></li>
+<li><p>Questions about plotting? Some notes:</p>
+<ul class="simple">
+<li><p>We’ll repeatedly use constructions like this, so get used to it!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">;</span></code> means we put multiple statements on the same line; this is not necessary and probably should be avoided in most cases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha=0.5</span></code> makes the (default) color lighter.</p></li>
+<li><p>Try <code class="docutils literal notranslate"><span class="pre">color='red'</span></code> on your own in the scatter plot.</p></li>
+<li><p>You might prefer side-by-side graphs <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> alternative code.</p></li>
+<li><p>An “axis” in Matplotlib means an entire subfigure, not just the x-axis or y-axis.</p></li>
+<li><p>If you want to know about a potting command already there, <code class="docutils literal notranslate"><span class="pre">shift-tab-tab</span></code> (or you can always google it).</p></li>
+<li><p>To find <code class="docutils literal notranslate"><span class="pre">vlines</span></code> (vertical lines), google “matplotlib vertical line”. (Try it to find horizontal lines.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fig.tight_layout()</span></code> for good spacing with subplots.</p></li>
+</ul>
+</li>
+<li><p>Observations on graphs?</p>
+<ul class="simple">
+<li><p>Scatter plot shows tail <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> in this case there <em>are</em> 5, but rerun and it will be more or less <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> <em>everything is a pdf</em>.</p></li>
+<li><p>The histogram is imperfect. Is this a problem? cf. the end of <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html"><span class="doc std std-doc">Exploring PDFs</span></a> with different numbers of samples.</p></li>
+<li><p>Tails fluctuate!</p></li>
+</ul>
+</li>
+<li><p>Frequentist approach</p>
+<ul class="simple">
+<li><p><em>true</em> value for parameters <span class="math notranslate nohighlight">\(\mu,\sigma\)</span>, not a pdf</p></li>
+<li><p>Use of <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> is common notation for likelihood.</p></li>
+<li><p>Why the product? <em>Assumed</em> independent. Reasonable?</p></li>
+<li><p><span class="math notranslate nohighlight">\(\log\mathcal{L}\)</span> for several reasons.</p>
+<ul>
+<li><p>to avoid problems with extreme values</p></li>
+<li><p>note: “<span class="math notranslate nohighlight">\(\log\)</span>” always means <span class="math notranslate nohighlight">\(\ln\)</span>. If we want base 10 we’ll use <span class="math notranslate nohighlight">\(\log_{10}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L} = (\text{const.})e^{-\chi^2}\)</span> so maximizing <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> is same as maximizing <span class="math notranslate nohighlight">\(\log\mathcal{L}\)</span> or minimizing <span class="math notranslate nohighlight">\(\chi^2\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<div class="dropdown admonition">
+<p class="admonition-title">Carry out the maximization</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\partial\log\mathcal{L}}{\partial\mu}
+  = -\frac{1}{2}\sum_{i=1}^M 2 \frac{x_i-\mu}{\sigma^2}\cdot (-1)
+  = \frac{1}{\sigma^2}\sum_{i=1}^M (x_i-\mu)
+  = \frac{1}{\sigma^2}\Bigl(\bigl(\sum_{i=1}^M x_i\bigr) - M\mu\Bigr)
+\]</div>
+<p>Set equal to zero to find <span class="math notranslate nohighlight">\(\mu_0\)</span> <span class="math notranslate nohighlight">\(\Longrightarrow\)</span>
+<span class="math notranslate nohighlight">\(M\mu_0 = \sum_{i=1}^M x_i\)</span> or <span class="math notranslate nohighlight">\(\mu_0 = \frac{1}{M}\sum_{i=1}^M x_i\)</span>.</p>
+<p>You do <span class="math notranslate nohighlight">\(\sigma_0^2\)</span>! (Easier to do <span class="math notranslate nohighlight">\(d/d\sigma^2\)</span> than <span class="math notranslate nohighlight">\(d/d\sigma\)</span>.)</p>
+</div>
+<ul class="simple">
+<li><p>Do these make sense?</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\mu_0\)</span> is the mean of data <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>estimator</em> for “true mean”.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_0\)</span> gives spread about <span class="math notranslate nohighlight">\(\mu_0\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Note the use of <code class="docutils literal notranslate"><span class="pre">.sum</span></code> to add up the <span class="math notranslate nohighlight">\(D\)</span> array elements.</p></li>
+<li><p>Printing with f strings: <code class="docutils literal notranslate"><span class="pre">f'...'</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.2f</span></code> means a float with 2 decimal places.</p></li>
+</ul>
+</li>
+<li><p>Note comment on “unbiased estimator”</p>
+<ul>
+<li><p>an <em>accurate</em> statistic</p></li>
+<li><p>Here compare <span class="math notranslate nohighlight">\(\mu_0\)</span> estimated from <span class="math notranslate nohighlight">\(\frac{1}{M}\)</span> vs. <span class="math notranslate nohighlight">\(\frac{1}{M-1}\)</span>.</p></li>
+<li><p>If you do this many times, you’ll find that <span class="math notranslate nohighlight">\(\frac{1}{M}\)</span> doesn’t quite give <span class="math notranslate nohighlight">\(\mu_{\rm true}\)</span> correctly (take mean of <span class="math notranslate nohighlight">\(\mu_0\)</span>s from many trials) but <span class="math notranslate nohighlight">\(\frac{1}{M-1}\)</span> does!</p></li>
+<li><p>The difference is <span class="math notranslate nohighlight">\(\mathcal{O}(1/M)\)</span>, so small for large <span class="math notranslate nohighlight">\(M\)</span>.</p></li>
+</ul>
+</li>
+<li><p>Compare estimates to true. Are they good estimates? How can you tell? E.g., should they be within 0.1, 0.01, or what?
+(More about this as we proceed!)</p></li>
+</ul>
+</li>
+<li><p>Bayesian approach <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> <span class="math notranslate nohighlight">\(p(\mu,\sigma|D,I)\)</span> is the posterior: the probability (density) of finding some <span class="math notranslate nohighlight">\(\mu,\sigma\)</span> given data <span class="math notranslate nohighlight">\(D\)</span> and what else we know (<span class="math notranslate nohighlight">\(I\)</span>).</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(I\)</span> could be that <span class="math notranslate nohighlight">\(\sigma &gt; 0\)</span> or <span class="math notranslate nohighlight">\(\mu\)</span> should be near zero.</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition-frequentist-probability admonition">
+<p class="admonition-title">Frequentist probability</p>
+<p>Long-run frequency of (real or imagined) trials <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> data is probabilistic (repeat experiment and get different result) but model parameters are not (universe stays the same with more observations).</p>
+</div>
+<div class="admonition-bayesian-probability admonition">
+<p class="admonition-title">Bayesian probability</p>
+<p>Quantification of information (what you know, often said as “what you believe”). Data are fixed (it’s what you found) but knowledge of true model parameters is fuzzy (and gets updated with more trials, cf. coin flipping).</p>
+</div>
+<p>One more time with Bayes’ theorem:</p>
+<div class="math notranslate nohighlight" id="equation-eq-bayes-again">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-eq-bayes-again" title="Permalink to this equation">¶</a></span>\[
+  p(\mu,\sigma | D,I) = \frac{p(D | \mu,\sigma,I)\,p(\mu,\sigma|I)}{p(D|I)}
+\]</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Label each term in Eq. <a class="reference internal" href="#equation-eq-bayes-again">(2.1)</a>.</p>
+<div class="math notranslate nohighlight">
+\[
+  \underbrace{p(\mu,\sigma | D,I)}_{\text{posterior}} = \frac{\overbrace{p(D | \mu,\sigma,I)}^{\text{likelihood}}\ \ \overbrace{p(\mu,\sigma|I)}^{\text{prior}}}{\underbrace{p(D|I)}_{\text{evidence or data probability}}}
+\]</div>
+</div>
+<ul class="simple">
+<li><p>Bayes’ Theorem tells you how to flip <span class="math notranslate nohighlight">\(p(\mu,\sigma|D,I) \leftrightarrow p(D|\mu,\sigma,I)\)</span>. Here the first pdf is hard to think but evaluating but the second pdf is easy.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Aside on the denominator, which is called in various contexts the evidence, the data probability, or the fully marginalized likelihood.
+We evaluate it by using the basic marginalization rule (from the sum rule) to first insert an integration over all values of the general vector of parameters <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> and then the product rule to obtain an integral over the probability to get the data <span class="math notranslate nohighlight">\(D\)</span> given a particular <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span> times the probability of that <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}
+ p(D|I) &amp;= \int p(D,\boldsymbol{\theta}| I) \, d\boldsymbol{\theta} \\
+    &amp;= \int p(D|\boldsymbol{\theta}, I) p(\boldsymbol{\theta})\, d\boldsymbol{\theta}
+\end{align} \end{split}\]</div>
+<p>This is numerically a costly integral.
+Later we will look at ways to evaluate it.</p>
+</div>
+<ul class="simple">
+<li><p>For model <em>fitting</em> (i.e., parameter estimation), we don’t need <span class="math notranslate nohighlight">\(p(D|I)\)</span> calculated. Instead we find the posterior and directly normalize that function or, most often we only need relative probabilities.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(p(\mu,\sigma | I) \propto 1\)</span>, this is called a “flat” or “uniform” prior, in which case</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+  p(\mu,\sigma | D,I) \propto \mathcal{L}(D|\mu,\sigma)
+\]</div>
+<p>and a Frequentist and Bayesian will get the same answer for the most likely values <span class="math notranslate nohighlight">\(\mu_0,\sigma_0\)</span> (called “point estimates” as opposed to a full pdf).</p>
+<ul class="simple">
+<li><p>We will argue against the use of uniform priors later.</p></li>
+<li><p>The prior includes additional knowledge (information). It is what you know <em>before</em> the measurement in question.</p></li>
+</ul>
+<div class="admonition-discussion-point admonition">
+<p class="admonition-title">Discussion point</p>
+<p>A frequentist claims that the use of a prior is nonsense because it is subjective and tied to an individual.
+What would a Bayesian statistician say?</p>
+</div>
+<ul class="simple">
+<li><p>To compute posteriors such as <span class="math notranslate nohighlight">\(p(\mu,\sigma|D,I)\)</span> in practice we often use Markov Chain Monte Carlo aka MCMC.
+We’ll look at it now and discuss later.</p></li>
+</ul>
+</div>
+<div class="section" id="notebook-fitting-a-line">
+<h2>Notebook: Fitting a line<a class="headerlink" href="#notebook-fitting-a-line" title="Permalink to this headline">¶</a></h2>
+<p>Look at <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html"><span class="doc std std-doc">Parameter estimation example: fitting a straight line</span></a>.</p>
+<p>Annotations of the notebook:</p>
+<ul>
+<li><p>same imports as before</p></li>
+<li><p>assume we create data <span class="math notranslate nohighlight">\(y_{\rm exp}\)</span> (“exp” for “experiment”) from an underlying model of the form</p>
+<div class="math notranslate nohighlight">
+\[
+      y_{\rm exp}(x) = m_{\rm true} x + b_{\rm true} + \mbox{Gaussian noise}
+    \]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+     \boldsymbol{\theta}_{\rm true} = [b_{\rm true}, m_{\rm true}]
+      = [\text{intercept, slope}]_{\rm true}
+    \]</div>
+</li>
+<li><p>The Gaussian noise is taken to have mean <span class="math notranslate nohighlight">\(\mu=0\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma = dy\)</span> independent of <span class="math notranslate nohighlight">\(x\)</span>. This is implemented as
+<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">+=</span> <span class="pre">dy</span> <span class="pre">*</span> <span class="pre">rand.randn(N)</span></code> (note <code class="docutils literal notranslate"><span class="pre">randn</span></code>).</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(x_i\)</span> points themselves are also chosen randomly according to a uniform distribution <span class="math notranslate nohighlight">\(\Longrightarrow\)</span> <code class="docutils literal notranslate"><span class="pre">rand.rand(N)</span></code>.</p></li>
+<li><p>Here we are using the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> random number generators while we will mostly use those from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> elsewhere.</p></li>
+</ul>
+<p>The theoretical model <span class="math notranslate nohighlight">\(y_{\rm th}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[
+   y_{\rm th} = m x + b, \quad \mbox{with}\ \theta = [b, m]
+\]</div>
+<p>So in the sense of distributions (i.e., not an algebraic equation),</p>
+<div class="math notranslate nohighlight">
+\[
+  y_{\rm exp} = y_{\rm th} + \delta y_{\rm exp} + \delta y_{\rm th}
+\]</div>
+<ul>
+<li><p>The last term, which is the model discrepancy (or “theory error”) will be critically important in many applications, but has often been neglected. More on this later!</p></li>
+<li><p>Here we’ll take <span class="math notranslate nohighlight">\(\delta y_{\rm th}\)</span> to be negligible, which means that</p>
+<div class="math notranslate nohighlight">
+\[
+      y_i \sim \mathcal{N}(y_{\rm th}(x_i;\boldsymbol{\theta}), dy^2)
+    \]</div>
+<ul class="simple">
+<li><p>The notation here means that the random variable <span class="math notranslate nohighlight">\(y_i\)</span> is drawn from a normal (i.e., Gaussian) distribution with mean <span class="math notranslate nohighlight">\(y_{\rm th}(x_i;\boldsymbol{\theta})\)</span> (first entry) and variance <span class="math notranslate nohighlight">\(dy^2\)</span> (second entry).</p></li>
+<li><p>For a long list of other probability distributions, see Appendix A of BDA3, which is what everyone calls Ref. <span id="id2">[<a class="reference internal" href="../zbibliography.html#id3">GCS+13</a>]</span>.</p></li>
+</ul>
+</li>
+<li><p>We are assuming independence here. Is that a reasonable assumption?</p></li>
+</ul>
+</div>
+<div class="section" id="why-gaussians-tend-to-show-up">
+<h2>Why Gaussians tend to show up<a class="headerlink" href="#why-gaussians-tend-to-show-up" title="Permalink to this headline">¶</a></h2>
+<p>We’ll have several reason to explain why Gaussian distributions seem to show up everywhere. Here is a general reason.
+Given $p(x | D,I), then if the shape is not multimodal (only one hump), we could argue that our “best estimate” is</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/point_estimate_cartoon.png"><img alt="point estimate" class="bg-primary align-right" src="../../_images/point_estimate_cartoon.png" style="width: 250px;" /></a>
+<div class="math notranslate nohighlight">
+\[
+  \left.\frac{dp}{dx}\right|_{x_0} = 0
+  \quad \mbox{with} \quad
+    \left.\frac{d^2p}{dx^2}\right|_{x_0} &lt; 0 \ \text{(maximum)}.
+\]</div>
+<p>To characterize the posterior <span class="math notranslate nohighlight">\(p(x)\)</span>, we look nearby. <span class="math notranslate nohighlight">\(p(x)\)</span> itself varies too fast, but since it is positive definite we can characterize <span class="math notranslate nohighlight">\(\log p\)</span> instead (see “Follow-up to Gaussian approximation” at the beginning of <a class="reference external" href="https://furnstahl.github.io/Physics-8820/content/Parameter_estimation/lecture_05.html">Lecture 5</a> for a more definite reason to expand <span class="math notranslate nohighlight">\(\log p\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[
+ \Longrightarrow\ L(x) \equiv \log p(x|D,I) = 
+   L(x_0) + \left.\frac{dL}{dx}\right|_{x_0 = 0}
+   + \frac{1}{2} \left.\frac{d^2L}{dx^2}\right|_{x_0 = 0}(x-x_0)^2 + \cdots
+\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(\left.\frac{d^2L}{dx^2}\right|_{x_0 = 0} &lt; 0\)</span>.
+If we can neglect higher-order terms, then</p>
+<div class="math notranslate nohighlight">
+\[
+  p(x| D,I) \approx A\, e^{\frac{1}{2}\left.\frac{d^2L}{dx^2}\right|_{x_0 = 0}(x-x_0)^2} ,
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(A\)</span> a normalization factor. So in this general circumstance we get a Gaussian. Comparing to</p>
+<div class="math notranslate nohighlight">
+\[
+  p(x|D,I) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/\sigma^2}
+  \quad\Longrightarrow\quad
+  \mu = x_0, \ \sigma = \left(-\left.\frac{d^2L}{dx^2}\right|_{x_0}\right)^{-1/2}
+\]</div>
+<ul class="simple">
+<li><p>We usually quote <span class="math notranslate nohighlight">\(x = x_0 \pm \sigma\)</span>, because <em>if</em> it is a Gaussian this is <em>sufficient</em> to tell us the entire distribution and <span class="math notranslate nohighlight">\(n\)</span> standard deviations is <span class="math notranslate nohighlight">\(n\times \sigma\)</span>.</p></li>
+<li><p>But for a Bayesian, the full posterior <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> for <span class="math notranslate nohighlight">\(\forall x\)</span> is the general result, and <span class="math notranslate nohighlight">\(x = x_0 \pm \sigma\)</span> may be only an approximate characterization.</p></li>
+</ul>
+<div class="admonition-to-think-about admonition">
+<p class="admonition-title">To think about …</p>
+<p>What if <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> is asymmetric? What if it is multimodal?</p>
+</div>
+</div>
+<div class="section" id="bayesian-vs-frequentist-confidence-interval">
+<h2>Bayesian vs. Frequentist confidence interval<a class="headerlink" href="#bayesian-vs-frequentist-confidence-interval" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>For concreteness, consider a 95% interval applied to the estimation of a parameter given data.</p></li>
+<li><p>Bayesian version is easy; a 95% credible interval or Bayesian confidence interval or degree-of-belief (DoB) interval is: given some data, there is a 95% chance (probability) that the interval contains the true parameter.</p></li>
+<li><p>Frequentist 95% confidence interval</p>
+<ul>
+<li><p>If we examine a large # of repeat samples, 95% of those intervals include the true value of the parameter.</p></li>
+<li><p>So the <em>parameter</em> is fixed (no pdf) and the confidence interval depends on data (random sampling).</p></li>
+<li><p>“There is a 95% probability that when I compute a confidence interval from data of this sort that the true value of <span class="math notranslate nohighlight">\(\theta\)</span> will fall within the (hypothetical) space of observations.”</p></li>
+<li><p>What?</p></li>
+</ul>
+</li>
+<li><p>A key difference: the Bayesian approach includes a prior.</p></li>
+<li><p>For a one-dimensional posterior that is symmetric, it is clear how to define the <span class="math notranslate nohighlight">\(d\%\)</span> confidence interval.</p>
+<ul>
+<li><p>Algorithm: start from the center, step outward on both sides, stop when <span class="math notranslate nohighlight">\(d\%\)</span> is enclosed.</p></li>
+<li><p>For a two-dimensional posterior, need a way to integrate from the top. (Could lower a plane, as desribed below for HPD.)</p></li>
+</ul>
+</li>
+<li><p>What if asymmetic or multimodal? Two of the possible choices:</p>
+<ul>
+<li><p>Equal-tailed interval (central interval): the area above and below the interval are equal.</p></li>
+<li><p>Highest posterior density (HPD) region: posterior density for every point is higher than the posterior density for any point outside the interval. [E.g., lower a horizontal line over the distribution until the desired interval percentage is covered by regions above the line.]</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "furnstahl/Physics-8820",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./content/Parameter_estimation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="param_est.html" title="previous page"><span class="section-number">2. </span>Bayesian parameter estimation</a>
+    <a class='right-next' id="next-link" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html" title="next page"><span class="section-number">2.2. </span>Parameter estimation example: Gaussian noise and averages</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dick Furnstahl<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,1123 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.1. Lecture 9 &#8212; Learning from data</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.2. A Bayesian Billiard game" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html" />
+    <link rel="prev" title="4. Why Bayes is better" href="bayes_is_better.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Learning from data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about.html">
+   About this Jupyter Book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Course overview
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Course/overview.html">
+   Objectives
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Basics/basics.html">
+   1. Basics of Bayesian statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_01.html">
+     1.1. Lecture 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">
+     1.2. Exploring PDFs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">
+     1.3. Checking the sum and product rules, and their consequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_02.html">
+     1.4. Lecture 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">
+     1.5. Interactive Bayesian updating: coin flipping example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">
+     1.6. Standard medical example by applying Bayesian rules of probability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">
+     1.7. Radioactive lighthouse problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_03.html">
+     1.8. Lecture 3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Parameter_estimation/param_est.html">
+   2. Bayesian parameter estimation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_04.html">
+     2.1. Lecture 4: Parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html">
+     2.2. Parameter estimation example: Gaussian noise and averages
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_extending_radioactive_lighthouse.html">
+     2.3. Assignment: 2D radioactive lighthouse location using MCMC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_05.html">
+     2.4. Lecture 5
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
+     2.5. Parameter estimation example: fitting a straight line
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/demo-ModelValidation.html">
+     2.6. Linear Regression and Model Validation demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_06.html">
+     2.7. Lecture 6
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/amplitude_in_presence_of_background.html">
+     2.8. Amplitude of a signal in the presence of background
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_parameter_estimation_followups.html">
+     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/exercise_LinearRegression.html">
+     2.10. Linear Regression exercise
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/linear_algebra_games_I.html">
+     2.11. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
+     2.12. Follow-up: fluctuation trends with # of points and data errors
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_I/MCMC_sampling_I.html">
+   3. MCMC sampling I
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_07.html">
+     3.1. Lecture 7
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/Metropolis_Poisson_example.html">
+     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_08.html">
+     3.3. Lecture 8
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
+     3.4. Exercise: Random walk
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="bayes_is_better.html">
+   4. Why Bayes is better
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     4.1. Lecture 9
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html">
+     4.2. A Bayesian Billiard game
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_10.html">
+     4.3. Lecture 10
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
+     4.4. Parameter estimation example: fitting a straight line II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_11.html">
+     4.5. Lecture 11
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
+     4.6. Error propagation: Example 3.6.2 in Sivia
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html">
+     4.7. Visualization of the Central Limit Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/correlation_intuition.html">
+     4.8. Building intuition about correlations (and a bit of Python linear algebra)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_12.html">
+     4.9. Lecture 12
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html">
+     4.10. Overview: MCMC Diagnostics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_13.html">
+     4.12. Lecture 13
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/dealing_with_outliers.html">
+     4.13. Dealing with outliers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Model_selection/model_selection.html">
+   5. Model selection
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_14.html">
+     5.1. Lecture 14
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_15.html">
+     5.2. Lecture 15
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Model_selection/Evidence_for_model_EFT_coefficients.html">
+     5.3. Evidence calculation for EFT expansions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_16.html">
+     5.4. Lecture 16
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_II/MCMC_sampling_II.html">
+   6. MCMC sampling II
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Liouville_theorem_visualization.html">
+     6.1. Liouville Theorem Visualization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
+     6.2. Solving orbital equations with different algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro.html">
+     6.4. PyMC3 Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started.html">
+     6.5. Getting started with PyMC3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Gaussian_processes/gaussian_processes.html">
+   7. Gaussian processes
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/demo-GaussianProcesses.html">
+     7.1. Gaussian processes demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/GaussianProcesses.html">
+     7.2. Learning from data: Gaussian processes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/Gaussian_processes_exercises.html">
+     7.3. Exercise: Gaussian Process models with GPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Emulators/emulators.html">
+   8. Emulators
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Maximum_entropy/max_ent.html">
+   9. Assigning probabilities
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/demo-MaxEnt.html">
+     9.1. Assigning probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt.html">
+     9.2. Ignorance pdfs: Indifference and translation groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/Pdfs_from_MaxEnt.html">
+     9.3. MaxEnt for deriving probability distributions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt_Function_Reconstruction.html">
+     9.4. Maximum Entropy for reconstructing a function from its moments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Machine_learning/machine_learning.html">
+   10. Machine learning: Bayesian methods
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Machine_learning/Bayesian_optimization.html">
+     10.1. Physics 8805
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../SVD/svd.html">
+   11. PCA, SVD, and all that
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/SVD/linear_algebra_games_including_SVD.html">
+     11.1. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Model_mixing/model_mixing.html">
+   12. Model mixing
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Mini-projects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/mini-project_I_toy_model_of_EFT.html">
+   Mini-project I: Parameter estimation for a toy model of an EFT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/model-selection_mini-project-IIa.html">
+   Mini-project IIa: Model selection basics
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Reference material
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../zbibliography.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../related_topics.html">
+   Related topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/installing_anaconda.html">
+   Using Anaconda
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/using_github.html">
+   Using GitHub
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Reference/python_jupyter.html">
+   Python and Jupyter notebooks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_01.html">
+     Python and Jupyter notebooks: part 01
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_02.html">
+     Python and Jupyter notebooks: part 02
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../jb_tests.html">
+   Examples: Jupyter jb-book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Notebook keys
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule_KEY.html">
+   Checking the sum and product rules, and their consequences
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes_KEY.html">
+   Standard medical example by applying Bayesian rules of probability
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise_key.html">
+   Radioactive lighthouse problem
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Why_Bayes_is_better/lecture_09.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fcontent/Why_Bayes_is_better/lecture_09.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-bayes-is-better-i">
+   Why Bayes is Better I
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quotes-from-one-pioneering-and-one-renaissance-bayesian-authority">
+   Quotes from one pioneering and one renaissance Bayesian authority
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-advantages-of-the-bayesian-approach">
+   Summary: Advantages of the Bayesian approach
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#occams-razor">
+     Occam’s razor
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nuisance-parameters-i">
+   Nuisance parameters (I)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naive-frequentist-approach">
+     Naive frequentist approach
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bayesian-approach">
+     Bayesian approach
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="lecture-9">
+<h1><span class="section-number">4.1. </span>Lecture 9<a class="headerlink" href="#lecture-9" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="why-bayes-is-better-i">
+<h2>Why Bayes is Better I<a class="headerlink" href="#why-bayes-is-better-i" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>These examples were developed by Christian Forssén for the <a class="reference external" href="https://nucleartalent.github.io/Bayes2019">2019 TALENT course at York, UK</a>.</p></li>
+<li><p>Notebooks we’ll use:</p>
+<ul>
+<li><p><a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html"><span class="doc std std-doc">A Bayesian Billiard game</span></a></p></li>
+<li><p><a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html"><span class="doc std std-doc">Parameter estimation example: fitting a straight line II</span></a></p></li>
+<li><p><a class="reference internal" href="../../notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html"><span class="doc std std-doc">Error propagation: Example 3.6.2 in Sivia</span></a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="quotes-from-one-pioneering-and-one-renaissance-bayesian-authority">
+<h2>Quotes from one pioneering and one renaissance Bayesian authority<a class="headerlink" href="#quotes-from-one-pioneering-and-one-renaissance-bayesian-authority" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><em>“Probability theory is nothing but common sense reduced to calculation.”</em>
+(Laplace)</p>
+</div></blockquote>
+<blockquote>
+<div><p><em>“Bayesian inference probabilities are a measure of our state of knowledge about nature, not a measure of nature itself.”</em>
+(Sivia)</p>
+</div></blockquote>
+</div>
+<div class="section" id="summary-advantages-of-the-bayesian-approach">
+<h2>Summary: Advantages of the Bayesian approach<a class="headerlink" href="#summary-advantages-of-the-bayesian-approach" title="Permalink to this headline">¶</a></h2>
+<p>     1. Provides an elegantly simple and rational approach for answering, in an optimal way, any scientific question for a given state of information. This contrasts to the recipe or cookbook approach of conventional statistical analysis. The procedure is well-defined:</p>
+<ul class="simple">
+<li><p>Clearly state your question and prior information.</p></li>
+<li><p>Apply the sum and product rules. The starting point is always Bayes’ theorem.</p></li>
+</ul>
+<p>For some problems, a Bayesian analysis may simply lead to a familiar statistic. Even in this situation it often provides a powerful new insight concerning the interpretation of the statistic.</p>
+<p>     2. Incorporates relevant prior (e.g., known signal model or known theory model expansion) information through Bayes’ theorem. This is one of the great strengths of Bayesian analysis.</p>
+<ul class="simple">
+<li><p>For data with a small signal-to-noise ratio, a Bayesian analysis can frequently yield many orders of magnitude improvement in model parameter estimation, through the incorporation of relevant prior information about the signal model.</p></li>
+<li><p>For effective field theories, information about the expansion can be explicitly included and tested.</p></li>
+</ul>
+<p>     3. Provides a way of eliminating nuisance parameters through marginalization. For some problems, the marginalization can be performed analytically, permitting certain calculations to become computationally tractable.</p>
+<p>     4. Provides a way for incorporating the effects of systematic errors arising from both the measurement operation and theoretical model predictions.</p>
+<p>     5. Calculates probability of hypothesis directly: <span class="math notranslate nohighlight">\(p(H_i|D, I)\)</span>.</p>
+<p>     6. Provides a more powerful way of assessing competing theories at the forefront of science by automatically quantifying Occam’s razor.</p>
+<div class="section" id="occams-razor">
+<h3>Occam’s razor<a class="headerlink" href="#occams-razor" title="Permalink to this headline">¶</a></h3>
+<p>Occam’s razor is a principle attributed to the medieval philosopher William of Occam (or Ockham). The principle states that one should not make more assumptions than the minimum needed. It underlies all scientific modeling and theory building. It cautions us to choose from a set of otherwise equivalent models of a given phenomenon the simplest one. In any given model, Occam’s razor helps us to “shave off” those variables that are not really needed to explain the phenomenon. It was previously thought to be only a qualitative principle.</p>
+<p>The Bayesian quantitative Occam’s razor can also save a lot of time that might otherwise be spent chasing noise artifacts that masquerade as possible detections of real phenomena.
+We’ll have much more to say about this later when we discuss the Bayesian evidence in detail!</p>
+</div>
+</div>
+<div class="section" id="nuisance-parameters-i">
+<h2>Nuisance parameters (I)<a class="headerlink" href="#nuisance-parameters-i" title="Permalink to this headline">¶</a></h2>
+<p>Nuisance parameters are parameters we introduce to characterize a situation but whih we don’t care about or know in detail. We could also call them “auxiliary variables”. The Bayesian way to deal with them is to marginalize, i.e., to integrate over them.</p>
+<p>The procedure is illustrated in the notebook
+<a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html"><span class="doc std std-doc">“A Bayesian Billiard game”</span></a>
+and is quite generic, so it is worth looking at in detail. <em>The discussion here is not as complete as the notebook. Be sure to run through the notebook as well.</em></p>
+<p>Bayesian billiard schematic:</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/bayesian_billiard_schematic.png"><img alt="Bayesian billiard schematic" class="bg-primary align-center" src="../../_images/bayesian_billiard_schematic.png" style="width: 600px;" /></a>
+<p>On a hidden billiard table (i.e., Alice and Bob can’t see it), Carol has randomly established <span class="math notranslate nohighlight">\(\alpha\)</span>, which is the fraction of the table (<span class="math notranslate nohighlight">\(0 \leq \alpha \leq 1\)</span>) that defines whether Alice or Bob wins the roll.  Alice gains a point if the ball ends up less than <span class="math notranslate nohighlight">\(\alpha\)</span>, otherwise Bob gains a point. The first to six wins the game.</p>
+<p><strong>Capsule summary:</strong></p>
+<ul class="simple">
+<li><p>Carol knows <span class="math notranslate nohighlight">\(\alpha\)</span> but Alice and Bob don’t. <span class="math notranslate nohighlight">\(\alpha \sim U(0,1)\)</span>.</p></li>
+<li><p>Alice and Bob are betting on various outcomes.</p></li>
+<li><p>After 8 rolls, the score is Alice 5 and Bob 3.</p></li>
+<li><p>They are now going to bet on Bob pulling out an overall win.</p></li>
+<li><p>Alice is most likely to win, as she only needs 1 winning roll out of 3, and there is already some indication she is favored.</p></li>
+<li><p><strong>What odds should Bob accept?</strong></p></li>
+</ul>
+<p>[Note: this is obviously not a physics problem but you can map it onto many possible experimental or theoretical physics situations. E.g., <span class="math notranslate nohighlight">\(\alpha\)</span> could be a normalization in an experiment (not between 0 and 1, but <span class="math notranslate nohighlight">\(\alpha_{\text{min}}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{\text{max}}\)</span>) or a model parameter in a theory that we don’t know (we’ll see examples later!). In both cases we are not interested (usually) in the value of <span class="math notranslate nohighlight">\(\alpha\)</span>; we want to eliminate it.]</p>
+<div class="section" id="naive-frequentist-approach">
+<h3>Naive frequentist approach<a class="headerlink" href="#naive-frequentist-approach" title="Permalink to this headline">¶</a></h3>
+<p>Here we start by thinking about the best estimate for <span class="math notranslate nohighlight">\(\alpha\)</span>, call it <span class="math notranslate nohighlight">\(\alphahat\)</span>.
+If <span class="math notranslate nohighlight">\(B\)</span> is the statement “Bob wins,” then what is <span class="math notranslate nohighlight">\(p(B)\)</span>?</p>
+<ul class="simple">
+<li><p>Given the estimate <span class="math notranslate nohighlight">\(\alphahat\)</span>, Bob winning a subsequent roll has probability <span class="math notranslate nohighlight">\(1 - \alphahat\)</span>, and he must win 3 in a row <span class="math notranslate nohighlight">\(\Lra\)</span> <span class="math notranslate nohighlight">\(p(B) = (1-\alphahat)^3\)</span>.</p></li>
+<li><p>For future Bayesian reference: <span class="math notranslate nohighlight">\(p(B|\alpha) = (1-\alpha)^3\)</span> (i.e., if we know <span class="math notranslate nohighlight">\(\alpha\)</span> then the formula is the same).</p></li>
+</ul>
+<p>Let’s find the maximum likelihood estimate for <span class="math notranslate nohighlight">\(\alphahat\)</span>.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">What is the likelihood of <span class="math notranslate nohighlight">\(\alpha\)</span> for the result Alice 5 and Bob 3?</p>
+<p>This is a particular instance of the binomial distribution:</p>
+<div class="math notranslate nohighlight">
+\[
+   \mathcal{L}(\alpha) = {8 \choose 5}\alpha^5 (1-\alpha)^3
+\]</div>
+<p>We have the combinatoric factor <span class="math notranslate nohighlight">\({8 \choose 5}\)</span> because we can get to Alice 5 and Bob 3 in any order (e.g., Alice wins 5 in a row and then Bob 3 in a row; or Alice wins 4, then Bob 3, then Alice 1; and so on).</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Given <span class="math notranslate nohighlight">\(\mathcal{L}(\alpha)\)</span>, find the maximum likelihood.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+   \Lra \left.\frac{\partial\mathcal{L}}{\partial\alpha}\right|_{\alphahat} =0
+   &amp; \Lra 5 \alphahat^4 (1 - \alphahat)^3 - 3 \alphahat^5 (1-\alphahat)^2 = 0 \\
+   &amp; \Lra 5(1-\alphahat) - 3\alphahat = 0 \\
+   &amp; \Lra \alphahat_{\text{MLE}} = 5/8 
+\end{align}\end{split}\]</div>
+</div>
+<p>This estimate yields <span class="math notranslate nohighlight">\(p(B) \approx 0.053\)</span> or about 18 to 1 odds.</p>
+</div>
+<div class="section" id="bayesian-approach">
+<h3>Bayesian approach<a class="headerlink" href="#bayesian-approach" title="Permalink to this headline">¶</a></h3>
+<p>You should try to fill in the details here!</p>
+<div class="dropdown admonition">
+<p class="admonition-title">What pdf is the goal here?</p>
+<p>Find <span class="math notranslate nohighlight">\(p(B|D,I)\)</span> where <span class="math notranslate nohighlight">\(D = \{n_A = 5, n_B = 3\}\)</span>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">What would <span class="math notranslate nohighlight">\(I\)</span> include here?</p>
+<p><span class="math notranslate nohighlight">\(I\)</span> includes all the details of the game, such as how <span class="math notranslate nohighlight">\(\alpha\)</span> enters and how the winner of each roll is determined.</p>
+</div>
+<ul class="simple">
+<li><p>Plan: introduce <span class="math notranslate nohighlight">\(\alpha\)</span> as a nuisance parameter. If we know <span class="math notranslate nohighlight">\(\alpha\)</span>, the calculation is strightforward. If we only know it with some probability, then marginalize (i.e., do an appropriately weighted integral over <span class="math notranslate nohighlight">\(\alpha\)</span>).</p></li>
+<li><p>Note that we can take several different equivalent paths to the same result:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  &amp;a.\ p(B|D,I) = \int_0^1 d\alpha\, p(B,\alpha|D,I)
+    = \int_0^1 d\alpha\, p(B|\alpha,D,I) p(\alpha|D,I)\\
+  &amp;b.\ p(B,\alpha|D,I) \ \Lra\ \mbox{marginalize over $\alpha$}
+    \ \Lra\ \mbox{back to a.} \\
+  &amp;c.\ p(B|\alpha,D,I) \ \Lra\ \mbox{marginalize, weighting by
+  $p(\alpha|D,I)$}  
+\end{align}\end{split}\]</div>
+<ul class="simple">
+<li><p>What shall we do about <span class="math notranslate nohighlight">\(p(\alpha|D,I)\)</span>?</p></li>
+</ul>
+<div class="dropdown admonition">
+<p class="admonition-title">What was the naive frequentist distribution for <span class="math notranslate nohighlight">\(p(\alpha|D,I)\)</span>?</p>
+<p>The naive frequentist used the MLE: <span class="math notranslate nohighlight">\(p(\alpha|D,I) = \delta(\alpha-\alphahat)\)</span>.</p>
+</div>
+<p>The Bayesian approach is to use Bayes’ theorem to write <span class="math notranslate nohighlight">\(p(\alpha|D)\)</span> in terms of pdfs we know.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Write it out</p>
+<div class="math notranslate nohighlight">
+\[
+ p(\alpha|D,I) = \frac{p(D|\alpha,I)p(\alpha|I)}{p(D|I)}
+\]</div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">What should we assume for the prior <span class="math notranslate nohighlight">\(p(\alpha|I)\)</span>?</p>
+<p>The assumption is that there is no bias toward any value from 0 to 1, so we should assume a uniform, bounded pdf: <span class="math notranslate nohighlight">\(p(\alpha|I) = 1\)</span> for <span class="math notranslate nohighlight">\(0 \leq \alpha \leq 1\)</span> (with the implication that it is zero elsewhere).</p>
+</div>
+<p>In this situation we will need the denominator (unlike other examples of Bayes’ theorem we have considered so far) because we want a normalized probability.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">How do we evaluate the denominator?</p>
+<div class="math notranslate nohighlight">
+\[
+  p(D|I) = \int_0^1 d\alpha\, p(D|\alpha,I) p(\alpha|I)
+\]</div>
+<p>Note that we could write this directly or else first marginalize over <span class="math notranslate nohighlight">\(\alpha\)</span> and then apply the product rule. The interpretation is that the probability of getting a particular set of data can be found by averaging the probalibility of getting that data from all possible values of <span class="math notranslate nohighlight">\(\alpha\)</span>, weighted by the probability of getting that <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+</div>
+<p>Now put it all together:</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Find our goal!</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+  p(B|D,I) &amp;= \frac{\int_0^1 d\alpha\, p(B|\alpha,D,I) p(D,\alpha|I) p(\alpha|I)}
+                  {\int_0^1 d\alpha\, p(D|\alpha,I) p(\alpha|I)} \\
+           &amp;= \frac{\int_0^1 d\alpha\, (1-\alpha)^3 {8\choose 5} \alpha^5 (1-\alpha)^3 \cdot 1}
+                  {\int_0^1 d\alpha\, {8\choose 5} \alpha^5 (1-\alpha)^3 \cdot 1}
+\end{align}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p(B|\alpha,D,I) = (1-\alpha)^3\)</span> is just basic probability, <span class="math notranslate nohighlight">\(p(D|\alpha)\)</span> follows from binomial probabilities, and note that the combinatoric factor canceled out in the end.</p>
+<p>Can you directly interpret the first integral? It is an average of the probability of <span class="math notranslate nohighlight">\(B\)</span> being true for a particular <span class="math notranslate nohighlight">\(\alpha\)</span>, weighted by the (normalized) probability of that <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">What is the numerical result? Compare to the naive frequentist result.</p>
+<div class="math notranslate nohighlight">
+\[ \Lra\ p(B|D,I) = \frac{int_0^1 d\alpha\, (1-\alpha)^6 \alpha^5}
+          {int_0^1 d\alpha\, (1-\alpha)^3 \alpha^5}
+          \approx 0.091
+\]</div>
+<p>or about 10 to 1 odds. Cf. 18 to 1 odds from our naive frequentist.
+[Note: you can evaluate the integrals by expanding or by using the beta function <span class="math notranslate nohighlight">\(\beta(n,m) = \int_0^1 (1-t)^{n-1} t^{m-1}\, dt\)</span>.]</p>
+</div>
+<p>So the predicted results are very different!</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Why were the estimates so different?</p>
+<p>The frequentist evaluated the probability of Bob winning, <span class="math notranslate nohighlight">\(p(B|\alpha,D,I)\)</span> at the peak value of the weighting probability (maximum likelihood estimate), while the Bayesian <em>integrated</em> over that pdf. Because the pdf is very broad and asymmetric, these gave quite different answers.</p>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">How do we check who is correct?</p>
+<p>In many cases we can do a Monte Carlo simulation (at least to validate test cases). See the notebook <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html"><span class="doc std std-doc">A Bayesian Billiard game</span></a> for an implementation of this simulation. The result? Bayes wins!!!</p>
+</div>
+<p>Discussion points:</p>
+<ul class="simple">
+<li><p>Introducing <span class="math notranslate nohighlight">\(\alpha\)</span> is straightforward in a Bayesian approach, and all assumptions are clear.</p></li>
+<li><p>In general one introduces <em>many</em> such variables, which is how we can end up with posterior integrals we need to sample to do marginalization.</p></li>
+<li><p>The problem with the “naive frequentist” approach is not that it is “frequentist” but that it is “naive”. (In this case an incorrect use of a MLE to predict the likelihood of the result <span class="math notranslate nohighlight">\(B\)</span>.)
+But it is not easy to see how to proceed to take into account the need to sum over possibilities for <span class="math notranslate nohighlight">\(\alpha\)</span>, while it is natural for Bayes. Bayes is better!</p></li>
+</ul>
+<div class="admonition-python-aside-how-do-we-understand-the-monte-carlo-check admonition">
+<p class="admonition-title">Python aside: How do we understand the Monte Carlo check?</p>
+<p>The <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html"><span class="doc std std-doc">A Bayesian Billiard game</span></a> notebook implements a Monte Carlo simulation of the Bayesian Billiard Game to find out empirically what the odds of Bob winning are.
+The Python code to do this may appear quite obscure to you.
+Let’s step through how we think of formulating the task and how it is carried out using Python methods.
+<em>[Note for future upgrades: code it with a Pandas dataframe.]</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setting the random seed here with an integer argument will generate the</span>
+<span class="c1">#  same sequence of pseudo-random numbers.  We can use this to reproduce</span>
+<span class="c1">#  previous sequences.  If call statement this statement without an argument,</span>
+<span class="c1">#  np.random.seed(), then we will get a new sequence every time we rerun. </span>
+<span class="c1"># [Note: for NumPy &gt; 1.17, the recommendation is not to use this function, </span>
+<span class="c1">#  although it will continue to work. </span>
+<span class="c1">#  See https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+<span class="c1"># Set how many times we will play a random game (an integer).</span>
+<span class="n">num_games</span> <span class="o">=</span> <span class="mi">100000</span>
+
+<span class="c1"># Play num_games games with randomly-drawn alphas, between 0 and 1</span>
+<span class="c1">#  So alphas here is an array of 100000 values, which represent the true value </span>
+<span class="c1">#   of alpha in successive games.</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">num_games</span><span class="p">)</span>
+
+<span class="c1"># Check out the shape and the first 10 values</span>
+<span class="n">alphas</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#  alphas shape =  (100000,)</span>
+
+<span class="n">alphas</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+<span class="c1">#  array([0.78493534, 0.67468677, 0.75934891, 0.74440188, 0.42772768,</span>
+<span class="c1">#         0.01775373, 0.86507125, 0.7817262 , 0.12253274, 0.59833343])</span>
+
+<span class="c1"># Now generate an 11-by-num_games array of random numbers between 0 and 1.</span>
+<span class="c1">#  These represent the 11 rolls in each of the num_games games.</span>
+<span class="c1">#  We need at most 11 rolls for one player to reach 6 wins, but of course</span>
+<span class="c1">#   the game would be over if one player reaches 6 wins earlier.</span>
+<span class="c1"># [Note: np.shape(rolls) will tell you the dimensions of the rolls array.] </span>
+<span class="n">rolls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">11</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alphas</span><span class="p">)))</span>
+
+<span class="c1"># Check the shape and then show the 11 rolls for the first game</span>
+<span class="n">rolls</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#  rolls shape =  (11, 100000)</span>
+<span class="n">rolls</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#  array([0.27554774, 0.87754685, 0.80245949, 0.58945847, 0.95515154,</span>
+<span class="c1">#         0.15568279, 0.34747239, 0.94627455, 0.80451086, 0.75016319,</span>
+<span class="c1">#         0.74861084])</span>
+
+<span class="c1"># count the cumulative wins for Alice and Bob at each roll</span>
+<span class="n">Alice_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">rolls</span> <span class="o">&lt;</span> <span class="n">alphas</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Bob_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">rolls</span> <span class="o">&gt;=</span> <span class="n">alphas</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># To see how this works, first look at `rolls &lt; alpha`</span>
+<span class="n">rolls</span> <span class="o">&lt;</span> <span class="n">alphas</span>
+<span class="c1">#  array([[ True,  True,  True, ..., False, False,  True],</span>
+<span class="c1">#         [False, False,  True, ..., False,  True,  True],</span>
+<span class="c1">#         [False,  True,  True, ..., False,  True,  True],</span>
+<span class="c1">#         ...,</span>
+<span class="c1">#         [False,  True,  True, ..., False,  True,  True],</span>
+<span class="c1">#         [ True,  True, False, ...,  True, False,  True],</span>
+<span class="c1">#         [ True,  True,  True, ..., False, False,  True]])</span>
+
+<span class="c1"># This is an 11 x 100000 array of Boolean values that compares</span>
+<span class="c1">#  the corresponding value in the rolls array to the values in</span>
+<span class="c1">#  the alpha array. Note that rolls[:,i] is compared to alphas[i]</span>
+<span class="c1">#  (i.e., for a given second index i in rolls, the comparison is</span>
+<span class="c1">#  the value for all 11 first indices to the same index i in alphas).</span>
+
+<span class="c1"># Check the first game (a set of 11 rolls) explicitly:</span>
+<span class="n">rolls</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">alphas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#  array([ True, False, False,  True, False,  True,  True, False, False,</span>
+<span class="c1">#          True,  True])</span>
+<span class="c1"># This agrees with comparisons of the entries printed above (alpha[0] = 0.78493534).</span>
+
+<span class="c1"># Now we add up how many rolls are won by Alice and Bob at each stage </span>
+<span class="c1"># (so Alice_count and Bob_count have the same shape as rolls). </span>
+<span class="c1"># We do this with np.cumsum, where the 0 argument means to do the</span>
+<span class="c1"># cumulative sum along the 0 axis, meaning the first index (so 0 to 10). </span>
+<span class="c1"># True = 1 and False = 0. The results for the first game are</span>
+<span class="n">Alice_count</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#  array([1, 1, 1, 2, 2, 3, 4, 4, 4, 5, 6])</span>
+<span class="n">Bob_count</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#  array([0, 1, 2, 2, 3, 3, 3, 4, 5, 5, 5])</span>
+
+
+<span class="c1"># sanity check: total number of wins should equal number of rolls</span>
+<span class="n">total_wins</span> <span class="o">=</span> <span class="n">Alice_count</span> <span class="o">+</span> <span class="n">Bob_count</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">total_wins</span><span class="o">.</span><span class="n">T</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(Sanity check passed)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Just a check: the sum of the two arrays for each of the games </span>
+<span class="c1">#  should be the numbers from 1 to 12. To make this comparison</span>
+<span class="c1">#  with == we need to take the transpose of total_wins. np.all</span>
+<span class="c1">#  gives True only if all the results are true and then assert</span>
+<span class="c1">#  will throw an error if it returns False.</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determine the number of games that meet our criterion of </span>
+<span class="c1">#  (A wins, B wins) = (5, 3), which means Bob&#39;s win count at eight rolls must </span>
+<span class="c1">#  equal exactly 3.  Index 7 of Bob_count must therefore be 3.</span>
+<span class="c1"># The expression: Bob_count[7,:] == 3   will be either True or False for each</span>
+<span class="c1">#  of the num_games entries.  The sequence of True and False values will be </span>
+<span class="c1">#  stored in the good_games array. (Try looking at the good_games array.)</span>
+<span class="n">good_games</span> <span class="o">=</span> <span class="n">Bob_count</span><span class="p">[</span><span class="mi">7</span><span class="p">,:]</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="c1"># If we apply .sum() to good_games, it will add 1 for True and 0 for False,</span>
+<span class="c1">#  so good_games.sum() is the total number of Trues.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of suitable games: </span><span class="si">{</span><span class="n">good_games</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s1">&#39;(out of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">alphas</span><span class="p">)</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1"> simulated ones)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Truncate our results to consider only the suitable games.  We use the</span>
+<span class="c1">#  good_games array as a template to select out the True games and redefine</span>
+<span class="c1">#  Alice_count and Bob_count (we could also rename these arrays).  </span>
+<span class="n">Alice_count</span> <span class="o">=</span> <span class="n">Alice_count</span><span class="p">[:,</span> <span class="n">good_games</span><span class="p">]</span>
+<span class="n">Bob_count</span> <span class="o">=</span> <span class="n">Bob_count</span><span class="p">[:,</span> <span class="n">good_games</span><span class="p">]</span>
+
+<span class="c1"># Determine which of these games Bob won.</span>
+<span class="c1">#  To win, he must reach six wins after 11 rolls. So we look at the last</span>
+<span class="c1">#  value for all of the suitable games: Bob_count[10,:] and count how</span>
+<span class="c1">#  many equal 6 by using np.sum.</span>
+<span class="n">bob_won</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Bob_count</span><span class="p">[</span><span class="mi">10</span><span class="p">,:]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Number of these games Bob won: </span><span class="si">{</span><span class="n">bob_won</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Compute the probability (just the ratio of games Bob won to the</span>
+<span class="c1">#  total number of games that satisfy Alice 5, Bob 3 after 8 games).</span>
+<span class="n">mc_prob</span> <span class="o">=</span> <span class="n">bob_won</span> <span class="o">/</span> <span class="n">good_games</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Monte Carlo Probability of Bob winning: </span><span class="si">{</span><span class="n">mc_prob</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MC Odds against Bob winning: </span><span class="si">{</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">mc_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">mc_prob</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> to 1&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "furnstahl/Physics-8820",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./content/Why_Bayes_is_better"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="bayes_is_better.html" title="previous page"><span class="section-number">4. </span>Why Bayes is better</a>
+    <a class='right-next' id="next-link" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html" title="next page"><span class="section-number">4.2. </span>A Bayesian Billiard game</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dick Furnstahl<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

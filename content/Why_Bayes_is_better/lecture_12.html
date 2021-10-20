@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.9. Lecture 12 &#8212; Learning from data</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.10. Overview: MCMC Diagnostics" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html" />
+    <link rel="prev" title="4.8. Building intuition about correlations (and a bit of Python linear algebra)" href="../../notebooks/Basics/correlation_intuition.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      <img src="../../_static/8820_icon.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Learning from data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../about.html">
+   About this Jupyter Book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Course overview
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Course/overview.html">
+   Objectives
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Topics
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Basics/basics.html">
+   1. Basics of Bayesian statistics
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_01.html">
+     1.1. Lecture 1
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Exploring_pdfs.html">
+     1.2. Exploring PDFs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule.html">
+     1.3. Checking the sum and product rules, and their consequences
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_02.html">
+     1.4. Lecture 2
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/Bayesian_updating_coinflip_interactive.html">
+     1.5. Interactive Bayesian updating: coin flipping example
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes.html">
+     1.6. Standard medical example by applying Bayesian rules of probability
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise.html">
+     1.7. Radioactive lighthouse problem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Basics/lecture_03.html">
+     1.8. Lecture 3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Parameter_estimation/param_est.html">
+   2. Bayesian parameter estimation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_04.html">
+     2.1. Lecture 4: Parameter estimation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_Gaussian_noise.html">
+     2.2. Parameter estimation example: Gaussian noise and averages
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_extending_radioactive_lighthouse.html">
+     2.3. Assignment: 2D radioactive lighthouse location using MCMC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_05.html">
+     2.4. Lecture 5
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/parameter_estimation_fitting_straight_line_I.html">
+     2.5. Parameter estimation example: fitting a straight line
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/demo-ModelValidation.html">
+     2.6. Linear Regression and Model Validation demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Parameter_estimation/lecture_06.html">
+     2.7. Lecture 6
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/amplitude_in_presence_of_background.html">
+     2.8. Amplitude of a signal in the presence of background
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/Assignment_parameter_estimation_followups.html">
+     2.9. Assignment: Follow-ups to Parameter Estimation notebooks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/exercise_LinearRegression.html">
+     2.10. Linear Regression exercise
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Parameter_estimation/linear_algebra_games_I.html">
+     2.11. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/assignments/fluctuation_trend_with_number_of_points_and_data_errors.html">
+     2.12. Follow-up: fluctuation trends with # of points and data errors
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_I/MCMC_sampling_I.html">
+   3. MCMC sampling I
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_07.html">
+     3.1. Lecture 7
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/Metropolis_Poisson_example.html">
+     3.2. Metropolis-Hasting MCMC sampling of a Poisson distribution
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../MCMC_sampling_I/lecture_08.html">
+     3.3. Lecture 8
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-random-walk-and-sampling.html">
+     3.4. Exercise: Random walk
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="bayes_is_better.html">
+   4. Why Bayes is better
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_09.html">
+     4.1. Lecture 9
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/bayes_billiard.html">
+     4.2. A Bayesian Billiard game
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_10.html">
+     4.3. Lecture 10
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/parameter_estimation_fitting_straight_line_II.html">
+     4.4. Parameter estimation example: fitting a straight line II
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_11.html">
+     4.5. Lecture 11
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/error_propagation_to_functions_of_uncertain_parameters.html">
+     4.6. Error propagation: Example 3.6.2 in Sivia
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/visualization_of_CLT.html">
+     4.7. Visualization of the Central Limit Theorem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Basics/correlation_intuition.html">
+     4.8. Building intuition about correlations (and a bit of Python linear algebra)
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     4.9. Lecture 12
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html">
+     4.10. Overview: MCMC Diagnostics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="lecture_13.html">
+     4.12. Lecture 13
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Why_Bayes_is_better/dealing_with_outliers.html">
+     4.13. Dealing with outliers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Model_selection/model_selection.html">
+   5. Model selection
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_14.html">
+     5.1. Lecture 14
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_15.html">
+     5.2. Lecture 15
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Model_selection/Evidence_for_model_EFT_coefficients.html">
+     5.3. Evidence calculation for EFT expansions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Model_selection/lecture_16.html">
+     5.4. Lecture 16
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../MCMC_sampling_II/MCMC_sampling_II.html">
+   6. MCMC sampling II
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Liouville_theorem_visualization.html">
+     6.1. Liouville Theorem Visualization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
+     6.2. Solving orbital equations with different algorithms
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro.html">
+     6.4. PyMC3 Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started.html">
+     6.5. Getting started with PyMC3
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Gaussian_processes/gaussian_processes.html">
+   7. Gaussian processes
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/demo-GaussianProcesses.html">
+     7.1. Gaussian processes demonstration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/GaussianProcesses.html">
+     7.2. Learning from data: Gaussian processes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Gaussian_processes/Gaussian_processes_exercises.html">
+     7.3. Exercise: Gaussian Process models with GPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Emulators/emulators.html">
+   8. Emulators
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Maximum_entropy/max_ent.html">
+   9. Assigning probabilities
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/demo-MaxEnt.html">
+     9.1. Assigning probabilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt.html">
+     9.2. Ignorance pdfs: Indifference and translation groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/Pdfs_from_MaxEnt.html">
+     9.3. MaxEnt for deriving probability distributions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Maximum_entropy/MaxEnt_Function_Reconstruction.html">
+     9.4. Maximum Entropy for reconstructing a function from its moments
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Machine_learning/machine_learning.html">
+   10. Machine learning: Bayesian methods
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Machine_learning/Bayesian_optimization.html">
+     10.1. Physics 8805
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../SVD/svd.html">
+   11. PCA, SVD, and all that
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/SVD/linear_algebra_games_including_SVD.html">
+     11.1. Linear algebra games including SVD for PCA
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Model_mixing/model_mixing.html">
+   12. Model mixing
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Mini-projects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/mini-project_I_toy_model_of_EFT.html">
+   Mini-project I: Parameter estimation for a toy model of an EFT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/mini-projects/model-selection_mini-project-IIa.html">
+   Mini-project IIa: Model selection basics
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Reference material
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../zbibliography.html">
+   Bibliography
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../related_topics.html">
+   Related topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/installing_anaconda.html">
+   Using Anaconda
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Reference/using_github.html">
+   Using GitHub
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Reference/python_jupyter.html">
+   Python and Jupyter notebooks
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_01.html">
+     Python and Jupyter notebooks: part 01
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/Reference/Jupyter_Python_intro_02.html">
+     Python and Jupyter notebooks: part 02
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../jb_tests.html">
+   Examples: Jupyter jb-book
+  </a>
+ </li>
+</ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  Notebook keys
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/simple_sum_product_rule_KEY.html">
+   Checking the sum and product rules, and their consequences
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/medical_example_by_Bayes_KEY.html">
+   Standard medical example by applying Bayesian rules of probability
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/Basics/radioactive_lighthouse_exercise_key.html">
+   Radioactive lighthouse problem
+   <span style="color: red">
+    Key
+   </span>
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Why_Bayes_is_better/lecture_12.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/furnstahl/Physics-8820"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/furnstahl/Physics-8820/issues/new?title=Issue%20on%20page%20%2Fcontent/Why_Bayes_is_better/lecture_12.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#integration-and-marginalization-by-sampling-intuition">
+   Integration and marginalization by sampling: intuition
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integration">
+     Integration
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#marginalization">
+     Marginalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mcmc-sampling-interlude-assessing-convergence">
+   MCMC Sampling Interlude: Assessing Convergence
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#figures-to-make-every-time-you-run-mcmc-following-hogg-and-foreman-mackey-sect-9">
+     Figures to make every time you run MCMC (following Hogg and Foreman-Mackey sect. 9)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-to-do-about-sampling-from-correlated-distributions">
+     What to do about sampling from correlated distributions?
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="lecture-12">
+<h1><span class="section-number">4.9. </span>Lecture 12<a class="headerlink" href="#lecture-12" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="integration-and-marginalization-by-sampling-intuition">
+<h2>Integration and marginalization by sampling: intuition<a class="headerlink" href="#integration-and-marginalization-by-sampling-intuition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="integration">
+<h3>Integration<a class="headerlink" href="#integration" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Comparison of integration methods</p>
+<ol class="simple">
+<li><p>Approximation by Riemann sum (or trapezoid rule).</p></li>
+<li><p>Approximation using MCMC samples.</p></li>
+</ol>
+</li>
+<li><p>Suppose we want to calculate the expectation value of a function <span class="math notranslate nohighlight">\(f(x)\)</span> where the distribution of <span class="math notranslate nohighlight">\(x\)</span> is <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> and we’ll restrict the domain of <span class="math notranslate nohighlight">\(x\)</span> to the positive real axis. So</p>
+<div class="math notranslate nohighlight" id="equation-f-expectation">
+<span class="eqno">(4.7)<a class="headerlink" href="#equation-f-expectation" title="Permalink to this equation">¶</a></span>\[
+       \langle f\rangle = \int_{0}^\infty f(x) p(x|D,I) dx
+    \]</div>
+<p>and we’ll imagine <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> is like the red lines in the figures here.</p>
+<a class="bg-primary reference internal image-reference" href="../../_images/schematic_histogram.png"><img alt="schematic histogram" class="bg-primary" src="../../_images/schematic_histogram.png" style="width: 300px;" /></a>
+<a class="bg-primary reference internal image-reference" href="../../_images/pdf_histogram_sampled.png"><img alt="sampled histogram" class="bg-primary" src="../../_images/pdf_histogram_sampled.png" style="width: 300px;" /></a>
+</li>
+<li><p>In method 1, we divide the <span class="math notranslate nohighlight">\(x\)</span> axis into bins of width <span class="math notranslate nohighlight">\(\delta x\)</span>, let <span class="math notranslate nohighlight">\(x_i = i\cdot\Delta x\)</span>, <span class="math notranslate nohighlight">\(i=0,\ldots,N-1\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[
+      \langle f\rangle \approx \sum_{i=0}^{N-1} f(x_i)\, p(x_i|D,I) \,\Delta x .
+    \]</div>
+<p>The histogram bar height tells us the strength of <span class="math notranslate nohighlight">\(p(x_i|D,I)\)</span> and we have a similar discretization for <span class="math notranslate nohighlight">\(f(x)\)</span>.</p>
+</li>
+<li><p>In method 2, we <em>sample</em> <span class="math notranslate nohighlight">\(p(x|D,I)\)</span> to obtain a representative set of <span class="math notranslate nohighlight">\(x\)</span> values, which we’ll denote by <span class="math notranslate nohighlight">\(\{x_j\}\)</span>, <span class="math notranslate nohighlight">\(j=0,\ldots,N'-1\)</span>. If I histogram <span class="math notranslate nohighlight">\(\{x_j\}\)</span> it looks like the posterior, as seen in the figures. To approximate the expectation value, we simply use:</p>
+<div class="math notranslate nohighlight">
+\[
+      \langle f\rangle \approx \frac{1}{N'}\sum_{j=0}^{N'-1} f(x_j) .
+    \]</div>
+</li>
+<li><p>In method 1, the function <span class="math notranslate nohighlight">\(p(x | D,I)\)</span> weights <span class="math notranslate nohighlight">\(f(x)\)</span> at <span class="math notranslate nohighlight">\(x_i\)</span> by multiplying by the value of <span class="math notranslate nohighlight">\(p(x_i|D,I\)</span>), so strong weighting near the peak of <span class="math notranslate nohighlight">\(p\)</span> and weak weighting far away. The amount of the weighting is given (approximately) by the height of the corresponding histogram bar.
+In method 2, we have similar weighting of <span class="math notranslate nohighlight">\(f(x)\)</span> near to and far from the peak of <span class="math notranslate nohighlight">\(p\)</span>, but instead of this being accomplished by multiplying by <span class="math notranslate nohighlight">\(p(x_j|D,I)\)</span>, there are more <span class="math notranslate nohighlight">\(x_j\)</span> values near the peak than far away, in proportion to <span class="math notranslate nohighlight">\(p(x_j|D,I)\)</span>. In the end it is the same weight!</p></li>
+</ul>
+</div>
+<div class="section" id="marginalization">
+<h3>Marginalization<a class="headerlink" href="#marginalization" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Return to the expectation value of <span class="math notranslate nohighlight">\(x\)</span> in Eq. <a class="reference internal" href="#equation-f-expectation">(4.7)</a>, but now suppose we introduce a nuisance parameter <span class="math notranslate nohighlight">\(y\)</span> into the distribution:</p>
+<div class="math notranslate nohighlight" id="equation-y-marg">
+<span class="eqno">(4.8)<a class="headerlink" href="#equation-y-marg" title="Permalink to this equation">¶</a></span>\[
+      p(x|D,I) = \int_{0}^{\infty} dy\, p(x,y|D,I)
+    \]</div>
+</li>
+<li><p>And now we sample <span class="math notranslate nohighlight">\(p(x,y|D,I)\)</span> using MCMC to obtain samples <span class="math notranslate nohighlight">\(\{(x_j,y_j)\}\)</span>, <span class="math notranslate nohighlight">\(j=0,\ldots,N'-1\)</span>.</p></li>
+<li><p>If we had a function of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, say <span class="math notranslate nohighlight">\(g(x,y)\)</span>, that we wanted to take the expectation value, we could use our samples as usual:</p>
+<div class="math notranslate nohighlight" id="equation-g-exp-samp">
+<span class="eqno">(4.9)<a class="headerlink" href="#equation-g-exp-samp" title="Permalink to this equation">¶</a></span>\[
+      \langle g \rangle \approx \frac{1}{N'}\sum_{j=0}^{N'-1} g(x_j,y_j) .
+    \]</div>
+</li>
+<li><p>But suppose we just have <span class="math notranslate nohighlight">\(f(x)\)</span>, so we want to integrate out the <span class="math notranslate nohighlight">\(y\)</span> dependence; e.g., going backwards in <a class="reference internal" href="#equation-y-marg">(4.8)</a>? How do we do that with our samples <span class="math notranslate nohighlight">\(\{(x_j,y_j)\}\)</span>?</p>
+<div class="math notranslate nohighlight" id="equation-f-exp-samp">
+<span class="eqno">(4.10)<a class="headerlink" href="#equation-f-exp-samp" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{align}
+      \langle f \rangle &amp;= \int_{0}^\infty dx f(x)\int_{0}^{\infty} dy\, p(x,y|D,I) \\
+      &amp;\approx \frac{1}{N'}\sum_{j=0}^{N'-1} f(x_j) .
+    \end{align}\end{split}\]</div>
+<p>Equivalently we can note that <span class="math notranslate nohighlight">\(f(x)\)</span> is just a special case of <span class="math notranslate nohighlight">\(g(x,y)\)</span> with no <span class="math notranslate nohighlight">\(y\)</span> dependence. Then <a class="reference internal" href="#equation-g-exp-samp">(4.9)</a> gives the same formula for <span class="math notranslate nohighlight">\(\langle f\rangle\)</span> as <a class="reference internal" href="#equation-f-exp-samp">(4.10)</a>.</p>
+</li>
+<li><p>So to marginalize, we just use the <span class="math notranslate nohighlight">\(x\)</span> values in each <span class="math notranslate nohighlight">\((x_j,y_j)\)</span> pair. <strong>I.e., we ignore the <span class="math notranslate nohighlight">\(y_j\)</span> column!</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="mcmc-sampling-interlude-assessing-convergence">
+<h2>MCMC Sampling Interlude: Assessing Convergence<a class="headerlink" href="#mcmc-sampling-interlude-assessing-convergence" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>We’ve seen that using MCMC with the Metropolis-Hastings algorithm can lead to a Markov chain: a set of confiurations of the parameters we are sampling. This chain enables inference because they are samples of the posterior of interest.</p></li>
+<li><p>But how do we know the chain is <em>converged</em>? That is, that it is providing samples of the <em>stationary</em> distribution? We need diagnostics of convergence!</p></li>
+<li><p>What can go wrong?</p>
+<ul>
+<li><p>Could fail to have converged.</p></li>
+<li><p>Could exhibit apparent convergence but the full posterior has not been sampled.</p></li>
+<li><p>Convergence could be only approximate because the samples are correlated (need to run longer).</p></li>
+</ul>
+</li>
+<li><p>Strategies to monitor convergence:</p>
+<ol class="simple">
+<li><p>Run multiple chains with distributed starting points.</p></li>
+<li><p>Compute variation between and within chains <span class="math notranslate nohighlight">\(\Lra\)</span> look for mixing and stationarity.</p></li>
+<li><p>Make sure the acceptance rate for MC steps is not too low or too high.</p></li>
+</ol>
+</li>
+<li><p>In this schematic version of Figure 11.3 in BDA-3, we see on the left two chains that stay in separate regions of <span class="math notranslate nohighlight">\(\theta_0\)</span> (no mixing) while on the right there is mixing but neither chain shows a stationary distribution (the <span class="math notranslate nohighlight">\(\theta_0\)</span> distribution keeps changing with MC steps).</p></li>
+</ul>
+<a class="bg-primary reference internal image-reference" href="../../_images/schematic_BDA3_fig11p3.png"><img alt="schematic BDA3 Figure 11.3" class="bg-primary align-center" src="../../_images/schematic_BDA3_fig11p3.png" style="width: 500px;" /></a>
+<ul>
+<li><p>Step through the <span class="xref myst">MCMC-diagnostics.ipynb</span> notebook, which goes through a laundry list of diagnostics. We’ll return to these later in the context of <code class="docutils literal notranslate"><span class="pre">pymc3</span></code>.</p></li>
+<li><p>Some notes:</p>
+<ul>
+<li><p>In BDA-3 Figure 11.1, a) is not converged; b) has 1000 iterations and is possibly converged; c) shows (correlated) draws from the target distribution.</p></li>
+<li><p>We’re doing straight-line fitting again using the <code class="docutils literal notranslate"><span class="pre">emcee</span></code> sampling, but now with the Metropolis-Hasting algorithm (more below on the default algorithm).</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">emcee</span></code>, we use <code class="docutils literal notranslate"><span class="pre">moves.GaussianMove(cov)</span></code>, which implements a Metropolis step using a Gaussian proposal with mean zero and covariance <code class="docutils literal notranslate"><span class="pre">cov</span></code>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  # MH-Sampler setup
+  stepsize = .005
+  cov = stepsize * np.eye(ndim)
+  p0 = np.random.rand(nwalkers,ndim)
+  
+  # initialize the sampler
+  sampler = emcee.EnsembleSampler(nwalkers, ndim, log_posterior, args=[x, y, dy],
+  moves=emcee.moves.GaussianMove(cov))
+</pre></div>
+</div>
+</li>
+<li><p>The covariance <code class="docutils literal notranslate"><span class="pre">cov</span></code> could be a scalar, as it is here, or a vector or a matrix. See the relevant <a class="reference external" href="https://emcee.readthedocs.io/en/stable/user/moves/">emcee manual page</a> for further details and more general moves.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">stepsize</span></code> parameter is at our disposal to explore the consequences on convergence of it being too large or too small.</p></li>
+<li><p>To get the chains from the above code snippet we use <code class="docutils literal notranslate"><span class="pre">sampler.chain</span></code>, which will give a list with the shape (# walkers, # steps, # dimensions). So 10 walkers taking 2000 steps each for a two-dimensional posterior (that is, <span class="math notranslate nohighlight">\(\thetavec\)</span> has two components) has the shape (10, 2000, 2). We can combine the results from all the walkers with <code class="docutils literal notranslate"><span class="pre">sampler.chain.reshape((-1,ndim))</span></code>, which flattens the first two axes of the list. (One reshape dimension can always be <span class="math notranslate nohighlight">\(-1\)</span>, which infers the value from the length of the array. So here the reshaped array will have two axes with the second one having dimension <code class="docutils literal notranslate"><span class="pre">ndim</span></code>.)</p></li>
+<li><p>How do we know a chain has converged to a representation of the posterior? <strong>Standard error of the mean <span class="math notranslate nohighlight">\(SE(\overline\thetavec)\)</span>.</strong></p>
+<ul class="simple">
+<li><p>This asks how the <em>mean</em> of <span class="math notranslate nohighlight">\(\thetavec\)</span> deviates in the chain     from the true distribution mean. Thus it is the simulation (or     sampling) error of the mean, not the underlying uncertainty (    or spread) of <span class="math notranslate nohighlight">\(\thetavec\)</span>.</p></li>
+<li><p>Calculate it for <span class="math notranslate nohighlight">\(N\)</span> samples as</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+           SE(\overline\thetavec) = \frac{\text{posterior standard     deviation}}{\sqrt{N}}
+        \]</div>
+<ul class="simple">
+<li><p>Visualize this with a moving average <span class="math notranslate nohighlight">\(\Lra\)</span> check for     stability.</p></li>
+</ul>
+</li>
+<li><p>Autocorrelation: do you recognize the formula in the code?</p></li>
+<li><p>Acceptance rate. Usually autotuned in packaged MCMC software.</p></li>
+<li><p>Assess the mixing with the <em>Gelman-Rubin diagnostic</em>.</p>
+<ul class="simple">
+<li><p>We’ll come back to this later, so this is just a quick pass.</p></li>
+<li><p>Basic idea: multiple chains from different walkers (after warm-up) are split up and one looks at the variance within a chain and between chain.</p></li>
+<li><p>There is some internal documentation in the notebook; see BDA-3 pages 284-5 for more details.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Try changing the <code class="docutils literal notranslate"><span class="pre">step_size</span></code> in the notebook to see what happens to each of the diagnostics.</p></li>
+<li><p>Point of emphasis: “The key purpose of MCMC is <em>not</em> to explore the posterior but to estimate expectation values.”</p></li>
+</ul>
+<div class="section" id="figures-to-make-every-time-you-run-mcmc-following-hogg-and-foreman-mackey-sect-9">
+<h3>Figures to make every time you run MCMC (following Hogg and Foreman-Mackey sect. 9)<a class="headerlink" href="#figures-to-make-every-time-you-run-mcmc-following-hogg-and-foreman-mackey-sect-9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Trace plots</p>
+<ul>
+<li><p>The burn-in length can be seen; can identify problems with model or sampler; qualitative judge of convergence.</p></li>
+<li><p>Use convergence diagnostic such as Gelman-Rubin.</p></li>
+</ul>
+</li>
+<li><p>Corner plots</p>
+<ul>
+<li><p>If you have a <span class="math notranslate nohighlight">\(D\)</span>-dimensional parameter space, plot all <span class="math notranslate nohighlight">\(D\)</span> diagonal and all <span class="math notranslate nohighlight">\({D\choose 2}\)</span> joint histograms to show low-level covariances and non-linearities.</p></li>
+<li><p>“… they are remarkable for locating expected and unexpected parameter relationships, and often invaluable for suggesting re-parameterizations and transformation that simplify your problem.”</p></li>
+</ul>
+</li>
+<li><p>Posterior predictive plots</p>
+<ul>
+<li><p>Take <span class="math notranslate nohighlight">\(K\)</span> random samples from your chain, plot the prediction each sample makes for the data and over-plot the observed data.</p></li>
+<li><p>“This plot gives a qualitative sense of how well the model fits the data and it can identify problems with sampling or convergence.”</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-to-do-about-sampling-from-correlated-distributions">
+<h3>What to do about sampling from correlated distributions?<a class="headerlink" href="#what-to-do-about-sampling-from-correlated-distributions" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>If our posterior has projections that are slanted, indicating correlations, and we are doing Metropolis-Hastings (MH) sampling, how do we decide on a step size?</p>
+<ul class="simple">
+<li><p>The problem is that we want to step differently in different directions: a long enough step size to explore the long axis will lead to many rejections in the orthogonal direction.</p></li>
+<li><p>So we do not want an isotropic step proposal!</p></li>
+</ul>
+</li>
+<li><p>If we propose steps by</p>
+<div class="math notranslate nohighlight">
+\[
+     p(\xvec) = \frac{1}{\sqrt{(2\pi)^N |\Sigma|}}
+       e^{-\xvec^{\intercal}\cdot \Sigma^{-1} \cdot \xvec} ,
+    \]</div>
+<p>then we don’t need to take <span class="math notranslate nohighlight">\(\Sigma \propto \sigma^2 \mathbb{1}_N\)</span>!</p>
+<ul class="simple">
+<li><p>We have <span class="math notranslate nohighlight">\(N(N-1)\)</span> parameters to “tune” to reduce the correlation time.</p></li>
+<li><p>However, this is increasingly difficult as <span class="math notranslate nohighlight">\(N\)</span> increases.</p></li>
+</ul>
+</li>
+<li><p>One improvement is to do a linear transformation of <span class="math notranslate nohighlight">\(\thetavec \longrightarrow \thetavec' = A\thetavec + B\)</span> such that <span class="math notranslate nohighlight">\(\thetavec'\)</span> is uncorrelated with similar <span class="math notranslate nohighlight">\(\sigma_i\)</span>’s in each direction. Thus effectively to rotate the slanted ellipse.</p></li>
+<li><p>Or one could use an “affine invariant” sampler such as <code class="docutils literal notranslate"><span class="pre">emcee</span></code>.</p>
+<ul class="simple">
+<li><p>An affine transformation is an invertible mapping from <span class="math notranslate nohighlight">\(\mathbb{R}^N \rightarrow \mathbb{R}^N\)</span>, namely <span class="math notranslate nohighlight">\(\yvec = A\xvec + B\)</span>, which is a combination of stretching, rotation, and translation.</p></li>
+<li><p>Affine invariant means that the sampler performs equally well on all affine tranformations of a distribution.</p></li>
+<li><p>So <code class="docutils literal notranslate"><span class="pre">emcee</span></code> figures out how to make the appropriate steps.</p></li>
+<li><p>It does this by using the many walkers at time <span class="math notranslate nohighlight">\(t\)</span>, which have sampled the space, to construct an appropriate affine compatible update step for <span class="math notranslate nohighlight">\(t+1\)</span>. This is one reason to make sure there are plenty of walkers.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "furnstahl/Physics-8820",
+            ref: "main",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./content/Why_Bayes_is_better"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="../../notebooks/Basics/correlation_intuition.html" title="previous page"><span class="section-number">4.8. </span>Building intuition about correlations (and a bit of Python linear algebra)</a>
+    <a class='right-next' id="next-link" href="../../notebooks/MCMC_sampling_I/MCMC-diagnostics.html" title="next page"><span class="section-number">4.10. </span>Overview: MCMC Diagnostics</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Dick Furnstahl<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
