@@ -369,6 +369,11 @@
      5.4. Lecture 16
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../mini-projects/MCMC-parallel-tempering_ptemcee.html">
+     5.5. Example: Parallel tempering for multimodal distributions
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -382,23 +387,28 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../content/MCMC_sampling_II/lecture_17.html">
+     6.1. Lecture 17
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../MCMC_sampling_II/Liouville_theorem_visualization.html">
-     6.1. Liouville Theorem Visualization
+     6.2. Liouville Theorem Visualization
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../MCMC_sampling_II/Orbital_eqs_with_different_algorithms.html">
-     6.2. Solving orbital equations with different algorithms
+     6.3. Solving orbital equations with different algorithms
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../MCMC_sampling_II/PyMC3_intro.html">
-     6.4. PyMC3 Introduction
+     6.5. PyMC3 Introduction
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../MCMC_sampling_II/PyMC3_docs_getting_started.html">
-     6.5. Getting started with PyMC3
+     6.6. Getting started with PyMC3
     </a>
    </li>
   </ul>
@@ -521,6 +531,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIa.html">
    Mini-project IIa: Model selection basics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html">
+   Mini-project IIb: How many lines are there
   </a>
  </li>
 </ul>
@@ -891,15 +906,16 @@ Furthermore, up to now we have ignored the denominator, which is the <em>evidenc
 <span class="c1"># Generate data points as described in the paper; remember these are relative</span>
 <span class="c1">#  errors, so multiply the percent by the data at each x. </span>
 <span class="n">x_max</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>   <span class="c1"># we&#39;ll eventually test sensitivity to x_max</span>
-<span class="n">x_data_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_max</span><span class="o">/</span><span class="mf">10.</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># don&#39;t start at x=0</span>
+<span class="n">num_x_pts</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">x_data_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_max</span><span class="o">/</span><span class="n">num_x_pts</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">num_x_pts</span><span class="p">)</span> <span class="c1"># don&#39;t start at x=0</span>
 <span class="n">eta</span> <span class="o">=</span> <span class="mf">0.05</span>         <span class="c1"># specified relative uncertainty is 5%</span>
 
 <span class="c1"># Here we generate new (different) data points with every run</span>
 <span class="n">y_data_pts</span> <span class="o">=</span> <span class="n">g_fun</span><span class="p">(</span><span class="n">x_data_pts</span><span class="p">)</span> <span class="o">*</span> \
                   <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x_data_pts</span><span class="p">))</span> <span class="p">)</span>
 <span class="c1"># *** The following is the exact data with errors from the paper *** </span>
-<span class="n">y_data_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.31694</span><span class="p">,</span> <span class="mf">0.33844</span><span class="p">,</span> <span class="mf">0.42142</span><span class="p">,</span> <span class="mf">0.57709</span><span class="p">,</span> <span class="mf">0.56218</span><span class="p">,</span> \
-                        <span class="mf">0.68851</span><span class="p">,</span> <span class="mf">0.73625</span><span class="p">,</span> <span class="mf">0.87270</span><span class="p">,</span> <span class="mf">1.0015</span><span class="p">,</span> <span class="mf">1.0684</span><span class="p">])</span>
+<span class="c1">#y_data_pts = np.array([0.31694, 0.33844, 0.42142, 0.57709, 0.56218, \</span>
+<span class="c1">#                        0.68851, 0.73625, 0.87270, 1.0015, 1.0684])</span>
 
 <span class="n">dy_data</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">*</span> <span class="n">y_data_pts</span>
 
@@ -916,7 +932,7 @@ Furthermore, up to now we have ignored the denominator, which is the <em>evidenc
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pts_all</span><span class="p">,</span> <span class="n">g_fun</span><span class="p">(</span><span class="n">x_pts_all</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Toy function, data, and first terms in expansion&#39;</span><span class="p">)</span>
 
-<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dim</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pts_all</span><span class="p">,</span> <span class="n">y_model</span><span class="p">(</span><span class="n">x_pts_all</span><span class="p">,</span> <span class="n">theta_true</span><span class="p">[:</span><span class="n">n_dim</span><span class="p">],</span> <span class="n">order</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
@@ -1031,15 +1047,15 @@ Furthermore, up to now we have ignored the denominator, which is the <em>evidenc
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 []
-1 [0.20333624]
-2 [0.24775754 1.62635552]
-3 [0.24722899 1.64562563 2.97886819]
-4 [0.24724465 1.64514945 2.98155115 0.37615527]
-5 [0.24725295 1.64491728 2.98262888 0.37739053]
-6 [0.24725442 1.64487828 2.98278937 0.37760849]
-7 [0.24725463 1.64487271 2.9828104  0.37764116]
-8 [0.24725466 1.64487197 2.98281303 0.37764571]
-9 [0.24725466 1.64487187 2.98281334 0.3776463 ]
+1 [0.18905959]
+2 [0.2663842  1.00840971]
+3 [0.26534629 1.04681539 5.1379187 ]
+4 [0.26542193 1.0444888  5.15129999 0.77643755]
+5 [0.26545012 1.04369251 5.15508393 0.78074359]
+6 [0.26545433 1.04357961 5.15556006 0.78138924]
+7 [0.26545481 1.04356714 5.15560832 0.7814645 ]
+8 [0.26545486 1.04356592 5.15561273 0.78147222]
+9 [0.26545486 1.04356581 5.15561312 0.78147296]
 </pre></div>
 </div>
 <img alt="../../_images/Evidence_for_model_EFT_coefficients_12_1.png" src="../../_images/Evidence_for_model_EFT_coefficients_12_1.png" />
@@ -1052,9 +1068,11 @@ Furthermore, up to now we have ignored the denominator, which is the <em>evidenc
 <ul class="simple">
 <li><p>What do you expect to happen if you increase the range of data (set by <code class="docutils literal notranslate"><span class="pre">x_max</span></code> at the upper end)?  Do it and comment on the plots.
 <br><br></p></li>
+<li><p>What do you expect to happen if you increase the number of data points (set by <code class="docutils literal notranslate"><span class="pre">num_x_pts</span></code>)?  Do it and comment on the plots.
+<br><br></p></li>
 <li><p>What do you expect to happen if you change (first decrease, then increase) the relative error at each point? Do it and comment on the plots.
 <br><br></p></li>
-<li><p>What happens if you comment the definition of <code class="docutils literal notranslate"><span class="pre">y_data_pts</span></code> that uses the exact data from the paper and instead generate the noise randomly.  Does the pattern of the evidence change?  Does the magnitude of the evidence change?
+<li><p>What happens if you comment the definition of <code class="docutils literal notranslate"><span class="pre">y_data_pts</span></code> that uses the exact data from the paper and instead generate the noise randomly.  Does the pattern of the evidence change?  Does the magnitude of the evidence change? <strong>Note: in the current version the exact data has already been commented out.</strong>
 <br><br></p></li>
 </ul>
 </div>
