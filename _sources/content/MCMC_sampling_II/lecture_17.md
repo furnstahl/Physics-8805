@@ -51,10 +51,10 @@ But this doesn't help to get the normalization integral of the likelihood times 
 Many physicists learn to judge whether a fit of a model to data is good or to pick out the best fitting model among several by evaluating the $\chi^2/\text{dof}$ for a given model and comparing the result to one. Here $\chi^2$ is the sum of the squares of the residuals (data minus model predictions) divided by variance of the error at each point:
 
 $$
-  \chi^2 \equiv \sum_{i=1}^{N_{\text{data}}} \frac{\bigl(y_i - f(x_i;\hat\thetavec)\bigr)}{\sigma_i^2} ,
+  \chi^2 \equiv \sum_{i=1}^{N_{\text{data}}} \frac{\bigl(y_i - f(x_i;\hat\thetavec)\bigr)^2}{\sigma_i^2} ,
 $$
 
-where $y_i$ is the $i^{\text th}$ data point, $f(x_i;\hat\thetavec)$ is the prediction of the model for that point using the best fit for the parameters, $\hat\thetavec$, and $\sigma_i$ is the error bar for that data point. The degrees-of-freedom (dof), often denoted by $\nu$, is number of data points minus number of fitted parameters:
+where $y_i$ is the $i^{\text th}$ data point, $f(x_i;\hat\thetavec)$ is the prediction of the model for that point using the best fit for the parameters, $\hat\thetavec$, and $\sigma_i$ is the error bar for that data point. The degrees-of-freedom (dof), often denoted by $\nu$, is the number of data points minus number of fitted parameters:
 
 $$
   \nu = N_{\text{data}} - N_{\text{fit parameters}} .
@@ -70,7 +70,7 @@ $$
     y_{\text expt} = y_{\text th} + \delta y_{\text expt} + \delta y_{\text th}
 $$
 
-in which the theory is $y_{{\text th},i} = f(x_i;\hat\thetavec)$, the experimental error is  *independent* Gaussian distributed with mean zero and standard deviation $\sigma_i$, that is $\delta y_{\text expt} \sim \mathcal{N}(0,\Sigma)$ with $\Sigma_{ij} = \sigma_i^2 \delta_{ij}$, and $\delta y_{\text th}$ is neglected. The prior is (usually implicitly) taken to be uniform, so
+in which the theory is $y_{{\text th},i} = f(x_i;\hat\thetavec)$, the experimental error is  *independent* Gaussian distributed noise with mean zero and standard deviation $\sigma_i$, that is $\delta y_{\text expt} \sim \mathcal{N}(0,\Sigma)$ with $\Sigma_{ij} = \sigma_i^2 \delta_{ij}$, and $\delta y_{\text th}$ is neglected (i.e., no model discrepancy is included). The prior is (usually implicitly) taken to be uniform, so
 
 $$
      y_{\text expt} \sim \mathcal{N}\bigl(f(x_i;\hat\thetavec), \Sigma\bigr) .
@@ -80,7 +80,7 @@ The likelihood (and the posterior, with a uniform prior) is then proportional to
 
 According to this model, each squared term in $\chi^2$ is drawn from a *standard* normal distribution. In this context, "standard" means that the distribution has mean zero and variance 1. This is exactly what happens when we take as the random variables $\bigl(y_i - f(x_i;\hat\thetavec)\bigr)/\sigma_i$.
 But the sum of the squares of $k$ *independent* standard normal random variables has a known distribution, called the $\chi^2$ distribution with $k$ degrees of freedom. 
-So the sum of the normalized residuals should be distributed (if you generated many sets of them) as a $\chi^2$ distribution. How many degrees of freedom? This should be the number of independent pieces of information. But we have found the fitted parameters $\hat\thetavec$ by minimizing $\chi^2$, i.e., by setting $\partial \chi^2(\thetavec)/\partial \theta_j$ for $j = 1,\ldots,N_{\text{fit parameters}}$, which means $N_{\text{fit parameters}}$ constraints. Therefore the number of dofs is given by $\nu$ in {eq}`eq:nu_def`.
+So the sum of the normalized residuals squared should be distributed (if you generated many sets of them) as a $\chi^2$ distribution. How many degrees of freedom? This should be the number of independent pieces of information. But we have found the fitted parameters $\hat\thetavec$ by minimizing $\chi^2$, i.e., by setting $\partial \chi^2(\thetavec)/\partial \theta_j$ for $j = 1,\ldots,N_{\text{fit parameters}}$, which means $N_{\text{fit parameters}}$ constraints. Therefore the number of dofs is given by $\nu$ in {eq}`eq:nu_def`.
 
 Now what do we do with this information? We only have one draw from the (supposed) $\chi^2$ distribution. But if that distribution is narrow, we should be close to the mean. The mean of a $\chi^2$ distribution with $k = \nu$ dofs is $\nu$, with variance $2\nu$. 
 So if we've got a good fit (and our statistical model is valid), then $\chi^2/\nu$ should be close to one. If it is much larger, than the conditions are not satisfied, so the model doesn't work. If it is smaller, than the failure implies that the residuals are too small, meaning overfitting.
@@ -93,6 +93,45 @@ If there are 1000 data points, then $\sigma \approx 0.045$, so $0.91 \leq \chi^2
 What can go wrong? Lots! See
 ["Do's and Don'ts of reduced chi-squared"](https://arxiv.org/pdf/1012.3754.pdf) for a thorough discussion. But we've assumed that the data is Gaussian and independent, that data is dominated by experimental and not theoretical errors, and that the constraints from fitting are linearly independent. We've also assumed a lot of data and 
 we've ignored informative (or, more precisely, non-uniform priors) priors.
+
+## Overview of Mini-project IIb: How many lines?
+
+The notebook for Mini-project IIb is [](/notebooks/mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.ipynb).
+
+* The problem is adapted from Sivia, section 4.2.
+* Basic problem: we are given a noisy spectrum (maybe it is intensity as a function of frequency of electromagnetic signals) with some number of signal lines along with background signals.
+We want to use parameter estimation and model selection (via parallel tempering) to determine what we can about the peaks.
+    * Model selection addresses how many peaks;
+    * parameter estimation addresses what are the positions and amplitudes of the peaks.
+
+* The true (i.e., underlying) model is a sum of Gaussians plus a constant background.
+    * The knowledge you have to analyze the data is the known width of the Gaussians but *not* how many Gaussians there are, nor what their amplitudes and positions are.
+    * We add Gaussian noise with known $\sigma_{\text{exp}}$ to each data point. 
+    * If there are $M$ lines, then there are $2M+1$ model parameters $\alphavec = (A_0, x_0, A_1, x_1, \ldots, B)$.
+    * Formulas are in the notebook.
+
+```{image} /_images/miniproject_IIb_figure.png
+:alt: Handdrawn schematic of the underlying model
+:class: bg-primary
+:width: 300px
+:align: center
+```
+* There are 5 required subtasks, plus a bonus subtask and one to do to get a plus. Some notes:
+    1. Formulate the problem in Bayesian language of how many lines and what are the model parameters.
+        * This amounts to working through Sivia 4.2.
+    2. Derive an approximation for the posterior probability.
+        * Again, Sivia 4.2 has intermediate steps, but try doing it yourself. Be careful of the $M$!
+        * Where is the Ockham factor?
+        * Does this assume $B$ is known?
+    3. Optional: numerical implementation.
+    4. Generate data $\Lra$ just need to look at fluctuations and impact of width and noise.
+    5. Parameter estimation with `emcee`.
+        * Show what happens with `numpeaks = 2`.
+        * Your job: explain!
+    6. Main part: parallel tempering (with `ptemcee`) results for the evidence.
+        * Explain the behavior (clear maximum or saturation).
+        * Connect to toy model results.
+    7. Repeat for another situation (different # of peaks, width, or noise).
 
 
 ## Hamiltonian Monte Carlo (HMC) overview and visualization
@@ -157,7 +196,7 @@ which map states at time $t$ to states at time $t+s$. (Recall the difference bet
         K(p) = \frac{1}{2}p^\intercal M^{-1} p ,
     $$
 
-    where $M$ is a symmetic, positive (what does that mean?) "mass matrix", typically diagonal and even $M\times \mathbb{1}_d (proportional to the identity matrix in $d$-dimensions).
+    where $M$ is a symmetic, positive (what does that mean?) "mass matrix", typically diagonal and even $M\times \mathbb{1}_d$ (proportional to the identity matrix in $d$-dimensions).
 
     * This is minus the log probability density (plus a constant) of a Gaussian with zero mean and covariance matrix $M$.
 

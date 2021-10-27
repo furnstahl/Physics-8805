@@ -50,7 +50,7 @@
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"TeX": {"Macros": {"N": ["\\mathbb{N}"], "Z": ["\\mathbb{Z}"], "floor": ["\\lfloor#1\\rfloor", 1], "bmat": ["\\left[\\begin{array}"], "emat": ["\\end{array}\\right]"], "alphavec": ["\\boldsymbol{\\alpha}"], "muvec": ["\\boldsymbol{\\mu}"], "phivec": ["\\boldsymbol{\\phi}"], "sigmavec": ["\\boldsymbol{\\sigma}"], "Sigmavec": ["\\boldsymbol{\\Sigma}"], "thetavec": ["\\boldsymbol{\\theta}"], "thetavechat": ["\\widehat\\thetavec"], "avec": ["\\boldsymbol{a}"], "Bvec": ["\\boldsymbol{B}"], "rvec": ["\\boldsymbol{r}"], "xvec": ["\\boldsymbol{x}"], "yvec": ["\\boldsymbol{y}"], "Lra": ["\\Longrightarrow"], "abar": ["\\overline a"], "Xbar": ["\\overline X"], "alphahat": ["\\widehat\\alpha"], "Hhat": ["\\hat H"], "yth": ["y_{\\text{th}}"], "yexp": ["y_{\\text{exp}}"], "ym": ["y_{\\text{m}}"]}}})</script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -402,13 +402,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro.html">
-     6.5. PyMC3 Introduction
+    <a class="reference internal" href="lecture_18.html">
+     6.5. Lecture 18
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started.html">
-     6.6. Getting started with PyMC3
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_intro_updated.html">
+     6.6. PyMC3 Introduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../notebooks/MCMC_sampling_II/PyMC3_docs_getting_started_updated.html">
+     6.7. Getting started with PyMC3
     </a>
    </li>
   </ul>
@@ -727,6 +732,11 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview-of-mini-project-iib-how-many-lines">
+   Overview of Mini-project IIb: How many lines?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hamiltonian-monte-carlo-hmc-overview-and-visualization">
    Hamiltonian Monte Carlo (HMC) overview and visualization
   </a>
@@ -800,9 +810,9 @@ Other approaches for the Bayes factor (ratio of evidences) are discussed in <a c
 <p>Many physicists learn to judge whether a fit of a model to data is good or to pick out the best fitting model among several by evaluating the <span class="math notranslate nohighlight">\(\chi^2/\text{dof}\)</span> for a given model and comparing the result to one. Here <span class="math notranslate nohighlight">\(\chi^2\)</span> is the sum of the squares of the residuals (data minus model predictions) divided by variance of the error at each point:</p>
 <div class="math notranslate nohighlight">
 \[
-  \chi^2 \equiv \sum_{i=1}^{N_{\text{data}}} \frac{\bigl(y_i - f(x_i;\hat\thetavec)\bigr)}{\sigma_i^2} ,
+  \chi^2 \equiv \sum_{i=1}^{N_{\text{data}}} \frac{\bigl(y_i - f(x_i;\hat\thetavec)\bigr)^2}{\sigma_i^2} ,
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(y_i\)</span> is the <span class="math notranslate nohighlight">\(i^{\text th}\)</span> data point, <span class="math notranslate nohighlight">\(f(x_i;\hat\thetavec)\)</span> is the prediction of the model for that point using the best fit for the parameters, <span class="math notranslate nohighlight">\(\hat\thetavec\)</span>, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> is the error bar for that data point. The degrees-of-freedom (dof), often denoted by <span class="math notranslate nohighlight">\(\nu\)</span>, is number of data points minus number of fitted parameters:</p>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> is the <span class="math notranslate nohighlight">\(i^{\text th}\)</span> data point, <span class="math notranslate nohighlight">\(f(x_i;\hat\thetavec)\)</span> is the prediction of the model for that point using the best fit for the parameters, <span class="math notranslate nohighlight">\(\hat\thetavec\)</span>, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> is the error bar for that data point. The degrees-of-freedom (dof), often denoted by <span class="math notranslate nohighlight">\(\nu\)</span>, is the number of data points minus number of fitted parameters:</p>
 <div class="math notranslate nohighlight" id="equation-eq-nu-def">
 <span class="eqno">(6.1)<a class="headerlink" href="#equation-eq-nu-def" title="Permalink to this equation">¶</a></span>\[
   \nu = N_{\text{data}} - N_{\text{fit parameters}} .
@@ -815,7 +825,7 @@ Other approaches for the Bayes factor (ratio of evidences) are discussed in <a c
 \[
     y_{\text expt} = y_{\text th} + \delta y_{\text expt} + \delta y_{\text th}
 \]</div>
-<p>in which the theory is <span class="math notranslate nohighlight">\(y_{{\text th},i} = f(x_i;\hat\thetavec)\)</span>, the experimental error is  <em>independent</em> Gaussian distributed with mean zero and standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>, that is <span class="math notranslate nohighlight">\(\delta y_{\text expt} \sim \mathcal{N}(0,\Sigma)\)</span> with <span class="math notranslate nohighlight">\(\Sigma_{ij} = \sigma_i^2 \delta_{ij}\)</span>, and <span class="math notranslate nohighlight">\(\delta y_{\text th}\)</span> is neglected. The prior is (usually implicitly) taken to be uniform, so</p>
+<p>in which the theory is <span class="math notranslate nohighlight">\(y_{{\text th},i} = f(x_i;\hat\thetavec)\)</span>, the experimental error is  <em>independent</em> Gaussian distributed noise with mean zero and standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>, that is <span class="math notranslate nohighlight">\(\delta y_{\text expt} \sim \mathcal{N}(0,\Sigma)\)</span> with <span class="math notranslate nohighlight">\(\Sigma_{ij} = \sigma_i^2 \delta_{ij}\)</span>, and <span class="math notranslate nohighlight">\(\delta y_{\text th}\)</span> is neglected (i.e., no model discrepancy is included). The prior is (usually implicitly) taken to be uniform, so</p>
 <div class="math notranslate nohighlight">
 \[
      y_{\text expt} \sim \mathcal{N}\bigl(f(x_i;\hat\thetavec), \Sigma\bigr) .
@@ -823,7 +833,7 @@ Other approaches for the Bayes factor (ratio of evidences) are discussed in <a c
 <p>The likelihood (and the posterior, with a uniform prior) is then proportional to <span class="math notranslate nohighlight">\(e^{-\chi^2(\hat\thetavec)/2}\)</span>.</p>
 <p>According to this model, each squared term in <span class="math notranslate nohighlight">\(\chi^2\)</span> is drawn from a <em>standard</em> normal distribution. In this context, “standard” means that the distribution has mean zero and variance 1. This is exactly what happens when we take as the random variables <span class="math notranslate nohighlight">\(\bigl(y_i - f(x_i;\hat\thetavec)\bigr)/\sigma_i\)</span>.
 But the sum of the squares of <span class="math notranslate nohighlight">\(k\)</span> <em>independent</em> standard normal random variables has a known distribution, called the <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with <span class="math notranslate nohighlight">\(k\)</span> degrees of freedom.
-So the sum of the normalized residuals should be distributed (if you generated many sets of them) as a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution. How many degrees of freedom? This should be the number of independent pieces of information. But we have found the fitted parameters <span class="math notranslate nohighlight">\(\hat\thetavec\)</span> by minimizing <span class="math notranslate nohighlight">\(\chi^2\)</span>, i.e., by setting <span class="math notranslate nohighlight">\(\partial \chi^2(\thetavec)/\partial \theta_j\)</span> for <span class="math notranslate nohighlight">\(j = 1,\ldots,N_{\text{fit parameters}}\)</span>, which means <span class="math notranslate nohighlight">\(N_{\text{fit parameters}}\)</span> constraints. Therefore the number of dofs is given by <span class="math notranslate nohighlight">\(\nu\)</span> in <a class="reference internal" href="#equation-eq-nu-def">(6.1)</a>.</p>
+So the sum of the normalized residuals squared should be distributed (if you generated many sets of them) as a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution. How many degrees of freedom? This should be the number of independent pieces of information. But we have found the fitted parameters <span class="math notranslate nohighlight">\(\hat\thetavec\)</span> by minimizing <span class="math notranslate nohighlight">\(\chi^2\)</span>, i.e., by setting <span class="math notranslate nohighlight">\(\partial \chi^2(\thetavec)/\partial \theta_j\)</span> for <span class="math notranslate nohighlight">\(j = 1,\ldots,N_{\text{fit parameters}}\)</span>, which means <span class="math notranslate nohighlight">\(N_{\text{fit parameters}}\)</span> constraints. Therefore the number of dofs is given by <span class="math notranslate nohighlight">\(\nu\)</span> in <a class="reference internal" href="#equation-eq-nu-def">(6.1)</a>.</p>
 <p>Now what do we do with this information? We only have one draw from the (supposed) <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution. But if that distribution is narrow, we should be close to the mean. The mean of a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with <span class="math notranslate nohighlight">\(k = \nu\)</span> dofs is <span class="math notranslate nohighlight">\(\nu\)</span>, with variance <span class="math notranslate nohighlight">\(2\nu\)</span>.
 So if we’ve got a good fit (and our statistical model is valid), then <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span> should be close to one. If it is much larger, than the conditions are not satisfied, so the model doesn’t work. If it is smaller, than the failure implies that the residuals are too small, meaning overfitting.</p>
 <p>But we should expect fluctuations, i.e., we shouldn’t always get the mean (or the mode, which is <span class="math notranslate nohighlight">\(\nu - 2\)</span> for <span class="math notranslate nohighlight">\(\nu\geq 0\)</span>). If <span class="math notranslate nohighlight">\(\nu\)</span> is large enough, then the distribution is approximately Gaussian and we can use the standard deviation / dof or <span class="math notranslate nohighlight">\(\sqrt{2\nu}/\nu = \sqrt{2/\nu}\)</span> as an expected width around one.
@@ -834,6 +844,62 @@ If there are 1000 data points, then <span class="math notranslate nohighlight">\
 <a class="reference external" href="https://arxiv.org/pdf/1012.3754.pdf">“Do’s and Don’ts of reduced chi-squared”</a> for a thorough discussion. But we’ve assumed that the data is Gaussian and independent, that data is dominated by experimental and not theoretical errors, and that the constraints from fitting are linearly independent. We’ve also assumed a lot of data and
 we’ve ignored informative (or, more precisely, non-uniform priors) priors.</p>
 </div>
+</div>
+<div class="section" id="overview-of-mini-project-iib-how-many-lines">
+<h2>Overview of Mini-project IIb: How many lines?<a class="headerlink" href="#overview-of-mini-project-iib-how-many-lines" title="Permalink to this headline">¶</a></h2>
+<p>The notebook for Mini-project IIb is <a class="reference internal" href="../../notebooks/mini-projects/model-selection_mini-project-IIb_How_many_lines_ptemcee.html"><span class="doc std std-doc">Mini-project IIb: How many lines are there</span></a>.</p>
+<ul class="simple">
+<li><p>The problem is adapted from Sivia, section 4.2.</p></li>
+<li><p>Basic problem: we are given a noisy spectrum (maybe it is intensity as a function of frequency of electromagnetic signals) with some number of signal lines along with background signals.
+We want to use parameter estimation and model selection (via parallel tempering) to determine what we can about the peaks.</p>
+<ul>
+<li><p>Model selection addresses how many peaks;</p></li>
+<li><p>parameter estimation addresses what are the positions and amplitudes of the peaks.</p></li>
+</ul>
+</li>
+<li><p>The true (i.e., underlying) model is a sum of Gaussians plus a constant background.</p>
+<ul>
+<li><p>The knowledge you have to analyze the data is the known width of the Gaussians but <em>not</em> how many Gaussians there are, nor what their amplitudes and positions are.</p></li>
+<li><p>We add Gaussian noise with known <span class="math notranslate nohighlight">\(\sigma_{\text{exp}}\)</span> to each data point.</p></li>
+<li><p>If there are <span class="math notranslate nohighlight">\(M\)</span> lines, then there are <span class="math notranslate nohighlight">\(2M+1\)</span> model parameters <span class="math notranslate nohighlight">\(\alphavec = (A_0, x_0, A_1, x_1, \ldots, B)\)</span>.</p></li>
+<li><p>Formulas are in the notebook.</p></li>
+</ul>
+</li>
+</ul>
+<a class="bg-primary reference internal image-reference" href="../../_images/miniproject_IIb_figure.png"><img alt="Handdrawn schematic of the underlying model" class="bg-primary align-center" src="../../_images/miniproject_IIb_figure.png" style="width: 300px;" /></a>
+<ul class="simple">
+<li><p>There are 5 required subtasks, plus a bonus subtask and one to do to get a plus. Some notes:</p>
+<ol class="simple">
+<li><p>Formulate the problem in Bayesian language of how many lines and what are the model parameters.</p>
+<ul>
+<li><p>This amounts to working through Sivia 4.2.</p></li>
+</ul>
+</li>
+<li><p>Derive an approximation for the posterior probability.</p>
+<ul>
+<li><p>Again, Sivia 4.2 has intermediate steps, but try doing it yourself. Be careful of the <span class="math notranslate nohighlight">\(M\)</span>!</p></li>
+<li><p>Where is the Ockham factor?</p></li>
+<li><p>Does this assume <span class="math notranslate nohighlight">\(B\)</span> is known?</p></li>
+</ul>
+</li>
+<li><p>Optional: numerical implementation.</p></li>
+<li><p>Generate data <span class="math notranslate nohighlight">\(\Lra\)</span> just need to look at fluctuations and impact of width and noise.</p></li>
+<li><p>Parameter estimation with <code class="docutils literal notranslate"><span class="pre">emcee</span></code>.</p>
+<ul>
+<li><p>Show what happens with <code class="docutils literal notranslate"><span class="pre">numpeaks</span> <span class="pre">=</span> <span class="pre">2</span></code>.</p></li>
+<li><p>Your job: explain!</p></li>
+</ul>
+</li>
+<li><p>Main part: parallel tempering (with <code class="docutils literal notranslate"><span class="pre">ptemcee</span></code>) results for the evidence.</p>
+<ul>
+<li><p>Explain the behavior (clear maximum or saturation).</p></li>
+<li><p>Connect to toy model results.</p></li>
+</ul>
+</li>
+<li><p>Repeat for another situation (different # of peaks, width, or noise).</p></li>
+</ol>
+</li>
+</ul>
 </div>
 <div class="section" id="hamiltonian-monte-carlo-hmc-overview-and-visualization">
 <h2>Hamiltonian Monte Carlo (HMC) overview and visualization<a class="headerlink" href="#hamiltonian-monte-carlo-hmc-overview-and-visualization" title="Permalink to this headline">¶</a></h2>
@@ -910,7 +976,7 @@ Most endpoints are within a high probability region, so a high percentage is acc
 \[
         K(p) = \frac{1}{2}p^\intercal M^{-1} p ,
     \]</div>
-<p>where <span class="math notranslate nohighlight">\(M\)</span> is a symmetic, positive (what does that mean?) “mass matrix”, typically diagonal and even <span class="math notranslate nohighlight">\(M\times \mathbb{1}_d (proportional to the identity matrix in \)</span>d$-dimensions).</p>
+<p>where <span class="math notranslate nohighlight">\(M\)</span> is a symmetic, positive (what does that mean?) “mass matrix”, typically diagonal and even <span class="math notranslate nohighlight">\(M\times \mathbb{1}_d\)</span> (proportional to the identity matrix in <span class="math notranslate nohighlight">\(d\)</span>-dimensions).</p>
 <ul class="simple">
 <li><p>This is minus the log probability density (plus a constant) of a Gaussian with zero mean and covariance matrix <span class="math notranslate nohighlight">\(M\)</span>.</p></li>
 </ul>
